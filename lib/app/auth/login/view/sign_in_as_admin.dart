@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:medicare_ecommerce_app/app/auth/registration/view/registration_view.dart';
+import 'package:medicare_ecommerce_app/app/auth/login/view/sign_up_as_admin.dart';
 import 'package:medicare_ecommerce_app/app/res/color.dart';
+import '../../../home/view/home_view.dart';
 import '../../../res/component/custom_button.dart';
 import '../../../res/component/custom_textfield.dart';
 
@@ -64,7 +65,7 @@ class _SignInAdminState extends State<SignInAdmin> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       customButton(
-                          onTap: () => Get.to(() => const RegistrationView()),
+                          onTap: () => Get.offAll(() => const HomeView()),
                           borderColor: AppColors.primaryColor,
                           btnName: 'Sign in',
                           context: context,
@@ -77,7 +78,9 @@ class _SignInAdminState extends State<SignInAdmin> {
                     height: 40,
                   ),
                   Text('Don\'t have a account yet?', style: TextStyle(color: Colors.black.withOpacity(0.5)),),
-                  Text('Sign up', style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold, fontSize: 20),),
+                  InkWell(
+                    onTap: () => Get.to(() => const SignUpAsAdmin()),
+                      child: Text('Sign up', style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold, fontSize: 20),)),
                 ],
               )
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medicare_ecommerce_app/app/auth/registration/view/registration_view.dart';
+import 'package:medicare_ecommerce_app/app/home/view/home_view.dart';
 import 'package:medicare_ecommerce_app/app/res/color.dart';
 import '../../../res/component/custom_button.dart';
 import '../../../res/component/custom_textfield.dart';
@@ -106,7 +107,7 @@ class _SignUpAsUserState extends State<SignUpAsUser> {
                    mainAxisAlignment: MainAxisAlignment.center,
                    children: [
                      customButton(
-                         onTap: () => Get.to(() => const RegistrationView()),
+                         onTap: () => Get.to(() => const HomeView()),
                          borderColor: AppColors.primaryColor,
                          btnName: 'Register',
                          context: context,
@@ -119,7 +120,9 @@ class _SignUpAsUserState extends State<SignUpAsUser> {
                    height: 40,
                  ),
                  Text('Already have an account?', style: TextStyle(color: Colors.black.withOpacity(0.5)),),
-                 Text('Sign in', style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold, fontSize: 20),),
+                 InkWell(
+                     onTap: () => Get.back(),
+                     child: Text('Sign in', style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold, fontSize: 20),)),
                ],
              )
 
