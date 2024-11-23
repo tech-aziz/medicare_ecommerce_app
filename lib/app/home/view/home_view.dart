@@ -17,14 +17,18 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int _currentIndex = 0;
+  bool isSwitched = false;
+  bool isCheckedACI = false;
+  bool isCheckedBeacon = false;
+  bool isCheckedSKF = false;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   final List<Widget> pages = [
     const HomeBodyView(),
     const CategoryBody(),
-    Center(child: Text("Category Page", style: TextStyle(fontSize: 24))),
-    Center(child: Text("Offers Page", style: TextStyle(fontSize: 24))),
-    Center(child: Text("Cart Page", style: TextStyle(fontSize: 24))),
-    Center(child: Text("Account Page", style: TextStyle(fontSize: 24))),
+    const Center(child: Text("Category Page", style: TextStyle(fontSize: 24))),
+    const Center(child: Text("Offers Page", style: TextStyle(fontSize: 24))),
+    const Center(child: Text("Cart Page", style: TextStyle(fontSize: 24))),
+    const Center(child: Text("Account Page", style: TextStyle(fontSize: 24))),
   ];
 
   final List<String> _titles = [
@@ -222,6 +226,191 @@ class _HomeViewState extends State<HomeView> {
               ),
             )
           : null,
+      endDrawer: Drawer(
+        child: ListView(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  Text(
+                    'Filter By',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Recent Products',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                  Switch(
+                    value: isSwitched,
+                    onChanged: (value) {
+                      setState(() {
+                        isSwitched = value;
+                      });
+                    },
+                  )
+                ],
+              ),
+            ),
+            const Divider(),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  Text(
+                    'Company',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Container(
+                height: 40,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey, width: 1),
+                    borderRadius: BorderRadius.circular(8)),
+                child: const Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                      ),
+                      child: Icon(
+                        Icons.search,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                            hintText: 'Search Product ',
+                            border: InputBorder.none),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'ACI LTD.',
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.6),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Checkbox(
+                    value: isCheckedACI,
+                    focusColor: AppColors.primaryColor,
+                    activeColor: AppColors.primaryColor,
+                    onChanged: (newValue) {
+                      setState(() {
+                        isCheckedACI = newValue!;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              thickness: 4,
+              color: Colors.black.withOpacity(0.1),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Beacon PLC.',
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.6),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Checkbox(
+                    value: isCheckedBeacon,
+                    focusColor: AppColors.primaryColor,
+                    activeColor: AppColors.primaryColor,
+                    onChanged: (newValue) {
+                      setState(() {
+                        isCheckedBeacon = newValue!;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              thickness: 4,
+              color: Colors.black.withOpacity(0.1),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'SK-F LTD.',
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.6),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Checkbox(
+                    value: isCheckedSKF,
+                    focusColor: AppColors.primaryColor,
+                    activeColor: AppColors.primaryColor,
+                    onChanged: (newValue) {
+                      setState(() {
+                        isCheckedSKF = newValue!;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              thickness: 4,
+              color: Colors.black.withOpacity(0.1),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: _currentIndex == 0
             ? Container(
@@ -298,8 +487,9 @@ class _HomeViewState extends State<HomeView> {
                           color: Colors.white,
                         )),
                     IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset('assets/icons/shopping-cart.svg',
+                        onPressed: () =>
+                            scaffoldKey.currentState?.openEndDrawer(),
+                        icon: SvgPicture.asset('assets/icons/filter.svg',
                             height: 25, width: 25, color: Colors.white)),
                     const SizedBox(
                       width: 6,
