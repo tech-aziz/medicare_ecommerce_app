@@ -4,9 +4,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../bottom_pages/category_body/category_body.dart';
 import '../../bottom_pages/home_body/home_body_view.dart';
+import '../../cart/cart_view.dart';
 import '../../helpers/launch_dialer_helper.dart';
+import '../../notification/notification_view.dart';
 import '../../res/color.dart';
 import '../../res/component/custom_text_widget.dart';
+import '../../search_page/search_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -22,18 +25,21 @@ class _HomeViewState extends State<HomeView> {
   bool isCheckedBeacon = false;
   bool isCheckedSKF = false;
   var scaffoldKey = GlobalKey<ScaffoldState>();
+
+
   final List<Widget> pages = [
     const HomeBodyView(),
     const CategoryBody(),
-    const Center(child: Text("Category Page", style: TextStyle(fontSize: 24))),
-    const Center(child: Text("Offers Page", style: TextStyle(fontSize: 24))),
-    const Center(child: Text("Cart Page", style: TextStyle(fontSize: 24))),
-    const Center(child: Text("Account Page", style: TextStyle(fontSize: 24))),
+    const Center(child: Text("Products", style: TextStyle(fontSize: 24))),
+    const Center(child: Text("Orders", style: TextStyle(fontSize: 24))),
+    const CartView(),
+    const Center(child: Text("Account", style: TextStyle(fontSize: 24))),
   ];
 
   final List<String> _titles = [
     'Store Name',
     'Company',
+    'Products'
     'Orders',
     'Cart',
     'Account',
@@ -226,7 +232,7 @@ class _HomeViewState extends State<HomeView> {
               ),
             )
           : null,
-      endDrawer: Drawer(
+      endDrawer: _currentIndex == 0 ? Drawer(
         child: ListView(
           children: [
             const Padding(
@@ -410,37 +416,36 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
         ),
-      ),
+      ) : null,
       appBar: AppBar(
         title: _currentIndex == 0
-            ? Container(
-                height: 40,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey, width: 1),
-                    borderRadius: BorderRadius.circular(8)),
-                child: const Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8.0,
+            ? InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SearchView()),
+            );
+          },
+              child: Container(
+                  height: 40,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.search, color: Colors.grey),
+                      SizedBox(width: 10),
+                      Text(
+                        'Search Product',
+                        style: TextStyle(color: Colors.grey,fontSize: 13),
                       ),
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                            hintText: 'Search Product ',
-                            border: InputBorder.none),
-                      ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
-              )
+            )
             : Text(
                 _titles[_currentIndex],
                 style: const TextStyle(color: Colors.white),
@@ -479,7 +484,9 @@ class _HomeViewState extends State<HomeView> {
                           color: Colors.white,
                         )),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(()=> const NotificationView());
+                        },
                         icon: Image.asset(
                           'assets/icons/notification.png',
                           height: 26,
@@ -499,7 +506,9 @@ class _HomeViewState extends State<HomeView> {
               ]
             : null,
       ),
-      body: pages[_currentIndex],
+      body: (_currentIndex >= 0 && _currentIndex < pages.length)
+          ? pages[_currentIndex]
+          : Center(child: Text("Invalid page index: $_currentIndex")),
       bottomNavigationBar: Container(
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(
@@ -513,9 +522,11 @@ class _HomeViewState extends State<HomeView> {
           backgroundColor: Colors.grey.shade200,
           currentIndex: _currentIndex,
           onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
+            if (index >= 0 && index < pages.length) {
+              setState(() {
+                _currentIndex = index;
+              });
+            }
           },
           // To show all items with text
           selectedItemColor: Colors.blueAccent,
@@ -550,10 +561,21 @@ class _HomeViewState extends State<HomeView> {
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                'assets/icons/order.svg',
+                'assets/images/products.svg',
                 height: 22,
                 width: 22,
                 color: _currentIndex == 2
+                    ? Colors.blue
+                    : Colors.grey.withOpacity(0.8),
+              ),
+              label: 'All Products',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/order.svg',
+                height: 22,
+                width: 22,
+                color: _currentIndex == 3
                     ? Colors.blue
                     : Colors.grey.withOpacity(0.8),
               ),
@@ -564,7 +586,7 @@ class _HomeViewState extends State<HomeView> {
                 'assets/icons/shopping-cart.svg',
                 height: 22,
                 width: 22,
-                color: _currentIndex == 3
+                color: _currentIndex == 4
                     ? Colors.blue
                     : Colors.grey.withOpacity(0.8),
               ),
@@ -575,7 +597,7 @@ class _HomeViewState extends State<HomeView> {
                 'assets/icons/account.svg',
                 height: 22,
                 width: 22,
-                color: _currentIndex == 4
+                color: _currentIndex == 5
                     ? Colors.blue
                     : Colors.grey.withOpacity(0.8),
               ),
