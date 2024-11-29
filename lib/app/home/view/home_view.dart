@@ -7,6 +7,7 @@ import '../../bottom_pages/home_body/home_body_view.dart';
 import '../../cart/cart_view.dart';
 import '../../helpers/launch_dialer_helper.dart';
 import '../../notification/notification_view.dart';
+import '../../order/order_view.dart';
 import '../../res/color.dart';
 import '../../res/component/custom_text_widget.dart';
 import '../../search_page/search_view.dart';
@@ -31,7 +32,7 @@ class _HomeViewState extends State<HomeView> {
     const HomeBodyView(),
     const CategoryBody(),
     const Center(child: Text("Products", style: TextStyle(fontSize: 24))),
-    const Center(child: Text("Orders", style: TextStyle(fontSize: 24))),
+    const OrderView(),
     const CartView(),
     const Center(child: Text("Account", style: TextStyle(fontSize: 24))),
   ];
@@ -597,7 +598,7 @@ class _HomeViewState extends State<HomeView> {
                 'assets/icons/account.svg',
                 height: 22,
                 width: 22,
-                color: _currentIndex == 5
+                color: _currentIndex == 6
                     ? Colors.blue
                     : Colors.grey.withOpacity(0.8),
               ),

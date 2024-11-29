@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:medicare_ecommerce_app/app/res/component/custom_button.dart';
 
-class CartView extends StatefulWidget {
-  const CartView({super.key});
+class OrderView extends StatefulWidget {
+  const OrderView({super.key});
 
   @override
-  State<CartView> createState() => _CartViewState();
+  State<OrderView> createState() => _OrderViewState();
 }
 
-class _CartViewState extends State<CartView> {
+class _OrderViewState extends State<OrderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,18 +131,95 @@ class _CartViewState extends State<CartView> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextFormField(
-              decoration: InputDecoration(
-                  hintText: 'Subtotal',
-                  hintStyle: TextStyle(
-                      color: Colors.black.withOpacity(0.7),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-              suffixText: '৳270.00'),
+            Container(
+              padding: const  EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(width: 1, color: Colors.grey, )
+              ),
+              
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('Order Summary',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20), ),
+                    ],
+                  ),
+                  SizedBox(height: 8,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Order No',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),
+                      Text('525356',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),
+
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Order To',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),),
+                      Text('Store Name',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),),
+
+                    ],
+                  ),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('Order Summary',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20), ),
+                    ],
+                  ),
+                  SizedBox(height: 8,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Cash on Delivery',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),),
+                      Text('৳30.00',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),),
+
+
+                    ],
+                  ),
+                  Divider(),
+                  SizedBox(height: 8,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Items',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),),
+                      Text('2 pcs',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),)
+
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Subtotal',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),),
+                      Text('৳270.00',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),)
+
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Total',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),),
+                      Text('৳300.00',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),)
+
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Placed on',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),),
+                      Text('12 nov 2024',style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),)
+
+                    ],
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 12,),
             customButton(
-                btnName: 'Checkout',
+                btnName: 'Confirm Order',
                 color: Colors.blueAccent,
                 textColor: Colors.white,
                 borderColor: Colors.transparent,
