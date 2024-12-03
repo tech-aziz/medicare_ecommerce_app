@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="medicare_ecommerce_app"
+        android:label="Medicine OS"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

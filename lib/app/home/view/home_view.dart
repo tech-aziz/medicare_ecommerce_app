@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:medicare_ecommerce_app/app/profile/view/profile_view.dart';
+import '../../all_product/view/all_product_view.dart';
 import '../../bottom_pages/category_body/category_body.dart';
 import '../../bottom_pages/home_body/home_body_view.dart';
 import '../../cart/cart_view.dart';
@@ -27,20 +29,19 @@ class _HomeViewState extends State<HomeView> {
   bool isCheckedSKF = false;
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
-
   final List<Widget> pages = [
     const HomeBodyView(),
     const CategoryBody(),
-    const Center(child: Text("Products", style: TextStyle(fontSize: 24))),
+    const AllProductView(),
     const OrderView(),
     const CartView(),
-    const Center(child: Text("Account", style: TextStyle(fontSize: 24))),
+    const ProfileView(),
   ];
 
   final List<String> _titles = [
     'Store Name',
     'Company',
-    'Products'
+    'Products',
     'Orders',
     'Cart',
     'Account',
@@ -233,201 +234,203 @@ class _HomeViewState extends State<HomeView> {
               ),
             )
           : null,
-      endDrawer: _currentIndex == 0 ? Drawer(
-        child: ListView(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
+      endDrawer: _currentIndex == 0
+          ? Drawer(
+              child: ListView(
                 children: [
-                  Text(
-                    'Filter By',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Recent Products',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Filter By',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        )
+                      ],
+                    ),
                   ),
-                  Switch(
-                    value: isSwitched,
-                    onChanged: (value) {
-                      setState(() {
-                        isSwitched = value;
-                      });
-                    },
-                  )
-                ],
-              ),
-            ),
-            const Divider(),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                children: [
-                  Text(
-                    'Company',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey, width: 1),
-                    borderRadius: BorderRadius.circular(8)),
-                child: const Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8.0,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Recent Products',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        Switch(
+                          value: isSwitched,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitched = value;
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  const Divider(),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Company',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey, width: 1),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: const Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                            ),
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                  hintText: 'Search Product ',
+                                  border: InputBorder.none),
+                            ),
+                          )
+                        ],
                       ),
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                            hintText: 'Search Product ',
-                            border: InputBorder.none),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'ACI LTD.',
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.6),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
                     ),
                   ),
-                  Checkbox(
-                    value: isCheckedACI,
-                    focusColor: AppColors.primaryColor,
-                    activeColor: AppColors.primaryColor,
-                    onChanged: (newValue) {
-                      setState(() {
-                        isCheckedACI = newValue!;
-                      });
-                    },
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'ACI LTD.',
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.6),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Checkbox(
+                          value: isCheckedACI,
+                          focusColor: AppColors.primaryColor,
+                          activeColor: AppColors.primaryColor,
+                          onChanged: (newValue) {
+                            setState(() {
+                              isCheckedACI = newValue!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: 4,
+                    color: Colors.black.withOpacity(0.1),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Beacon PLC.',
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.6),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Checkbox(
+                          value: isCheckedBeacon,
+                          focusColor: AppColors.primaryColor,
+                          activeColor: AppColors.primaryColor,
+                          onChanged: (newValue) {
+                            setState(() {
+                              isCheckedBeacon = newValue!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: 4,
+                    color: Colors.black.withOpacity(0.1),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'SK-F LTD.',
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.6),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Checkbox(
+                          value: isCheckedSKF,
+                          focusColor: AppColors.primaryColor,
+                          activeColor: AppColors.primaryColor,
+                          onChanged: (newValue) {
+                            setState(() {
+                              isCheckedSKF = newValue!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: 4,
+                    color: Colors.black.withOpacity(0.1),
                   ),
                 ],
               ),
-            ),
-            Divider(
-              thickness: 4,
-              color: Colors.black.withOpacity(0.1),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Beacon PLC.',
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.6),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Checkbox(
-                    value: isCheckedBeacon,
-                    focusColor: AppColors.primaryColor,
-                    activeColor: AppColors.primaryColor,
-                    onChanged: (newValue) {
-                      setState(() {
-                        isCheckedBeacon = newValue!;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Divider(
-              thickness: 4,
-              color: Colors.black.withOpacity(0.1),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'SK-F LTD.',
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.6),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Checkbox(
-                    value: isCheckedSKF,
-                    focusColor: AppColors.primaryColor,
-                    activeColor: AppColors.primaryColor,
-                    onChanged: (newValue) {
-                      setState(() {
-                        isCheckedSKF = newValue!;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Divider(
-              thickness: 4,
-              color: Colors.black.withOpacity(0.1),
-            ),
-          ],
-        ),
-      ) : null,
+            )
+          : null,
       appBar: AppBar(
         title: _currentIndex == 0
             ? InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SearchView()),
-            );
-          },
-              child: Container(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SearchView()),
+                  );
+                },
+                child: Container(
                   height: 40,
                   width: double.infinity,
                   padding: const EdgeInsets.all(8),
@@ -440,13 +443,13 @@ class _HomeViewState extends State<HomeView> {
                       Icon(Icons.search, color: Colors.grey),
                       SizedBox(width: 10),
                       Text(
-                        'Search Product',
-                        style: TextStyle(color: Colors.grey,fontSize: 13),
+                        'Search',
+                        style: TextStyle(color: Colors.grey, fontSize: 13),
                       ),
                     ],
                   ),
                 ),
-            )
+              )
             : Text(
                 _titles[_currentIndex],
                 style: const TextStyle(color: Colors.white),
@@ -486,7 +489,7 @@ class _HomeViewState extends State<HomeView> {
                         )),
                     IconButton(
                         onPressed: () {
-                          Get.to(()=> const NotificationView());
+                          Get.to(() => const NotificationView());
                         },
                         icon: Image.asset(
                           'assets/icons/notification.png',
@@ -561,15 +564,8 @@ class _HomeViewState extends State<HomeView> {
               label: 'Category',
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/images/products.svg',
-                height: 22,
-                width: 22,
-                color: _currentIndex == 2
-                    ? Colors.blue
-                    : Colors.grey.withOpacity(0.8),
-              ),
-              label: 'All Products',
+              icon: Icon(Icons.all_inbox),
+              label: 'Products',
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
@@ -598,7 +594,7 @@ class _HomeViewState extends State<HomeView> {
                 'assets/icons/account.svg',
                 height: 22,
                 width: 22,
-                color: _currentIndex == 6
+                color: _currentIndex == 5
                     ? Colors.blue
                     : Colors.grey.withOpacity(0.8),
               ),
