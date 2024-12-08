@@ -141,8 +141,8 @@ class _CartViewState extends State<CartView> {
                 const SizedBox(height: 20),
 
                 // Pricing Details
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -150,11 +150,11 @@ class _CartViewState extends State<CartView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             "Subtotal",
                             style: TextStyle(fontSize: 16),
                           ),
-                          const Text(
+                          Text(
                             "৳450.00",
                             style: TextStyle(
                               fontSize: 16,
@@ -163,16 +163,16 @@ class _CartViewState extends State<CartView> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       // Tax
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             "Tax (5%)",
                             style: TextStyle(fontSize: 16),
                           ),
-                          const Text(
+                          Text(
                             "৳22.50",
                             style: TextStyle(
                               fontSize: 16,
@@ -181,16 +181,16 @@ class _CartViewState extends State<CartView> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       // Discount
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             "Discount",
                             style: TextStyle(fontSize: 16, color: Colors.red),
                           ),
-                          const Text(
+                          Text(
                             "-৳45.00",
                             style: TextStyle(
                               fontSize: 16,
@@ -200,19 +200,19 @@ class _CartViewState extends State<CartView> {
                           ),
                         ],
                       ),
-                      const Divider(thickness: 1, height: 24),
+                      Divider(thickness: 1, height: 24),
                       // Total
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             "Total",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const Text(
+                          Text(
                             "৳427.50",
                             style: TextStyle(
                               fontSize: 18,
