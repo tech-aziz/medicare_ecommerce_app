@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:medicare_ecommerce_app/app/admin/view/admin_home/manage_account/manage_account.dart';
 
 import 'business_view/view/business_view.dart';
+
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
@@ -27,8 +29,7 @@ class _HomeViewState extends State<HomeView> {
         ),
         title: const Text(
           'Admin',
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.normal),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
         ),
       ),
       body: Padding(
@@ -42,17 +43,30 @@ class _HomeViewState extends State<HomeView> {
               crossAxisSpacing: 16, // Horizontal spacing between items
               mainAxisSpacing: 16, // Vertical spacing between items
               children: [
-                buildGridItem(icon: Icons.shopping_cart, label: 'Manage Sales', bgColor: const Color(0xffD2D2FF)),
-                buildGridItem(icon: Icons.shop, label: 'Manage Purchase', bgColor: const Color(0xffBDECD7)),
-                buildGridItem(icon: Icons.account_balance, label: 'Manage Accounts', bgColor: const Color(0xff85E6FA)),
-                
-                
+                buildGridItem(
+                    icon: Icons.shopping_cart,
+                    label: 'Manage Sales',
+                    bgColor: const Color(0xffD2D2FF)),
+                buildGridItem(
+                    icon: Icons.shop,
+                    label: 'Manage Purchase',
+                    bgColor: const Color(0xffBDECD7)),
+                InkWell(
+                    onTap: () {
+                      Get.to(ManageAccount());
+                    },
+                    child: buildGridItem(
+                        icon: Icons.account_balance,
+                        label: 'Manage Accounts',
+                        bgColor: const Color(0xff85E6FA))),
                 GestureDetector(
-                  onTap: () {
-                    Get.to(()=> const BusinessView());
-                  },
-                    child: buildGridItem(icon: Icons.bar_chart, label: 'Business View', bgColor: const Color(0xffBDDDDD))),
-
+                    onTap: () {
+                      Get.to(() => const BusinessView());
+                    },
+                    child: buildGridItem(
+                        icon: Icons.bar_chart,
+                        label: 'Business View',
+                        bgColor: const Color(0xffBDDDDD))),
               ],
             ),
           ],
@@ -61,7 +75,8 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget buildGridItem({required IconData icon, required String label, required Color bgColor}) {
+  Widget buildGridItem(
+      {required IconData icon, required String label, required Color bgColor}) {
     return Container(
       height: 100,
       width: 100,
@@ -99,5 +114,4 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
-  
 }

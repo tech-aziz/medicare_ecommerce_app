@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medicare_ecommerce_app/app/auth/login/view/sign_up_as_admin.dart';
 import 'package:medicare_ecommerce_app/app/res/color.dart';
-import '../../../home/view/home_view.dart';
+
+import '../../../admin/view/admin_home/home_view.dart';
 import '../../../res/component/custom_button.dart';
 import '../../../res/component/custom_textfield.dart';
 

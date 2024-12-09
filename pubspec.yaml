@@ -46,6 +46,7 @@ dependencies:
   auto_size_text: ^3.0.0
   # for launching a URL
   url_launcher: ^6.1.11
+  intl: ^0.20.1
 
 
 

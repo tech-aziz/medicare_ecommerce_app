@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'app/admin/view/admin_home/home_view.dart';
+import 'app/admin/view/admin_home/manage_account/manage_account.dart';
 import 'app/splash/splash_view.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -21,8 +23,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const RegistrationView(),
-      // home: const SplashView(),
-      home: const  HomeView(),
+      home: SplashView(),
+      // home: const  HomeView(),
     );
   }
 }
