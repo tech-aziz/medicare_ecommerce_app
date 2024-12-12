@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:medicare_ecommerce_app/app/auth/login/view/login_view.dart';
+import 'package:medicare_ecommerce_app/app/get_started/get_started.dart';
 import 'package:medicare_ecommerce_app/app/profile/view/profile_view.dart';
 import '../../all_product/view/all_product_view.dart';
 import '../../bottom_pages/category_body/category_body.dart';
@@ -69,7 +71,7 @@ class _HomeViewState extends State<HomeView> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 2),
                               child: Text(
-                                'MediCare',
+                                'Top Heath Pharma',
                                 style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.normal,
@@ -179,6 +181,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       ListTile(
                         onTap: () {
+                          Get.offAll(GetStarted());
                           // showAlertDialog(context)
                         },
                         title: displayMedium(

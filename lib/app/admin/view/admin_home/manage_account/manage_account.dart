@@ -118,7 +118,7 @@ class ManageAccount extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, // 3 items in a row
+            crossAxisCount: 2, // 3 items in a row
             mainAxisSpacing: 10, // Space between rows
             crossAxisSpacing: 10, // Space between columns
           ),
@@ -127,37 +127,22 @@ class ManageAccount extends StatelessWidget {
             final item = gridItems[index];
             Widget screen = item['screen'];
             return Card(
-              color: Colors.blue[400], // Blue-related color
+              elevation: 4,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => screen),
-                  );
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      item['icon'],
-                      size: 40,
-                      color: Colors.white, // White icon
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      item['name'],
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(item['icon'], size: 40, color: Colors.blue[700]),
+                  const SizedBox(height: 10),
+                  Text(
+                    item['name'],
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             );
           },

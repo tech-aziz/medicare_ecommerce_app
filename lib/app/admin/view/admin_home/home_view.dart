@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:medicare_ecommerce_app/app/admin/view/admin_home/manage_account/manage_account.dart';
+import 'package:medicare_ecommerce_app/app/admin/view/admin_home/manage_purchase/manage_purchase.dart';
 
 import 'business_view/view/business_view.dart';
 
@@ -47,10 +48,15 @@ class _HomeViewState extends State<HomeView> {
                     icon: Icons.shopping_cart,
                     label: 'Manage Sales',
                     bgColor: const Color(0xffD2D2FF)),
-                buildGridItem(
-                    icon: Icons.shop,
-                    label: 'Manage Purchase',
-                    bgColor: const Color(0xffBDECD7)),
+                InkWell(
+                  onTap:(){
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => ManagePurchase()));
+                  },
+                  child: buildGridItem(
+                      icon: Icons.shop,
+                      label: 'Manage Purchase',
+                      bgColor: const Color(0xffBDECD7)),
+                ),
                 InkWell(
                     onTap: () {
                       Get.to(ManageAccount());
