@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
   final bool? isLogin;
   final bool? enabled;
   final String? Function(String?)? validator;
+   final bool obscureText;
 
   const CustomTextField({
     super.key,
@@ -27,6 +28,7 @@ class CustomTextField extends StatelessWidget {
     this.enabled,
     this.validator,
     this.prefixIcon,
+     this.obscureText = false,
     // this.validator
   });
 
@@ -44,7 +46,8 @@ class CustomTextField extends StatelessWidget {
         cursorColor: Colors.black.withOpacity(0.5),
         cursorRadius: const Radius.circular(10),
         keyboardType: keyboardType,
-        obscureText: isSecured ?? false,
+        //obscureText: isSecured ?? false,
+         obscureText: obscureText,
         validator: validator,
         // onChanged: (value) => ,
         decoration: InputDecoration(

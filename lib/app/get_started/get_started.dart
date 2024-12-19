@@ -5,7 +5,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medicare_ecommerce_app/app/res/color.dart';
 import 'package:medicare_ecommerce_app/app/res/style/style.dart';
 import '../auth/login/view/sign_in_as_admin.dart';
-import '../auth/login/view/sign_in_as_user.dart';
+import '../auth/login/view/sign_in_as_user/sign_in_as_user.dart';
 import '../res/component/custom_button.dart';
 
 class GetStarted extends StatefulWidget {
