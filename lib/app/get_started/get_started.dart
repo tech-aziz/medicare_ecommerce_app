@@ -89,13 +89,13 @@ class _GetStartedState extends State<GetStarted> {
             const SizedBox(
               height: 12,
             ),
-            customButton(
-                onTap: () => Get.to(() => const SignInAdmin()),
-                borderColor: AppColors.primaryColor,
-                btnName: 'Sign in as a admin',
-                context: context,
-                textColor: AppColors.primaryColor,
-                border: Border.all(color: AppColors.primaryColor, width: 1.8)),
+            // customButton(
+            //     onTap: () => Get.to(() => const SignInAdmin()),
+            //     borderColor: AppColors.primaryColor,
+            //     btnName: 'Sign in as a admin',
+            //     context: context,
+            //     textColor: AppColors.primaryColor,
+            //     border: Border.all(color: AppColors.primaryColor, width: 1.8)),
           ],
         ),
       ),
