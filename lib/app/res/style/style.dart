@@ -4,5 +4,5 @@ class AppString {
   static String developedBy = '';
   static String companyName = '';
   static String welcomeText = 'Welcome!';
-  static String welcomeSubText = 'Your Health. Just to Click Away.';
+  static String welcomeSubText = 'Top Health Pharma.';
 }

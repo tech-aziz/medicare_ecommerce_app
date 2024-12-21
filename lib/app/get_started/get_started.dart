@@ -21,7 +21,6 @@ class _GetStartedState extends State<GetStarted> {
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-
       body: Center(
         // Wrap the Column with Center
         child: Column(
@@ -32,14 +31,10 @@ class _GetStartedState extends State<GetStarted> {
               height: 130,
               width: 130,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.white,
-              ),
-              child: Center(
-                child: SvgPicture.asset(
-                  'assets/images/person.svg',
-                ),
-              ),
+                  borderRadius: BorderRadius.circular(100),
+                  color: Colors.white,
+                  image: DecorationImage(
+                      image: AssetImage('assets/icons/splash_icon.jpeg'))),
             ),
             Text(
               AppString.welcomeText,

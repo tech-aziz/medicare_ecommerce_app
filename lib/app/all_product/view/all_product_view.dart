@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medicare_ecommerce_app/app/all_product/view/product_controller.dart';
 
+import '../../cart/cart_manager.dart';
 import '../../res/color.dart';
 
 class AllProductView extends StatelessWidget {
@@ -11,93 +12,7 @@ class AllProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProductController productController = Get.put(ProductController());
     return
-        //   ListView.builder(
-        //               itemCount: 10,
-        //               shrinkWrap: true,
-        //               primary: false,
-        //               itemBuilder: (context, index) {
-        //               return Padding(
-        //                 padding: const EdgeInsets.only(bottom: 12),
-        //                 child: Container(
-        //                   decoration: BoxDecoration(
-        //                       borderRadius: BorderRadius.circular(12),
-        //                       color: Colors.grey.withOpacity(0.1)),
-        //                   child: ListTile(
-        //                     leading: Image.asset('assets/images/tafnil.png',
-        //                         fit: BoxFit.contain),
-        //                     title: const Text('Eskayef Pharmaceuticals Ltd.'),
-        //                     subtitle: Column(
-        //                       mainAxisAlignment: MainAxisAlignment.start,
-        //                       crossAxisAlignment: CrossAxisAlignment.start,
-        //                       children: [
-        //                         const Text(
-        //                           'Tufnil Tablet- (200mg)',
-        //                           style: TextStyle(
-        //                               color: Colors.black, fontWeight: FontWeight.bold),
-        //                         ),
-        //                         Row(
-        //                           children: [
-        //                             Text(
-        //                               '1 pcs',
-        //                               style: TextStyle(
-        //                                   color: Colors.black.withOpacity(0.6),
-        //                                   fontWeight: FontWeight.normal),
-        //                             ),
-        //                             const SizedBox(
-        //                               width: 5,
-        //                             ),
-        //                             Container(
-        //                               padding: const EdgeInsets.all(4),
-        //                               decoration: BoxDecoration(
-        //                                 borderRadius: BorderRadius.circular(6),
-        //                                 color: Colors.red.withOpacity(0.2),
-        //                               ),
-        //                               child: const Text(
-        //                                 '+10% Discount',
-        //                                 style: TextStyle(color: Colors.red),
-        //                               ),
-        //                             )
-        //                           ],
-        //                         ),
-        //                         Row(
-        //                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                           children: [
-        //                             const Text(
-        //                               '৳90.00',
-        //                               style: TextStyle(
-        //                                   color: Colors.black,
-        //                                   fontWeight: FontWeight.bold),
-        //                             ),
-        //                             const SizedBox(
-        //                               width: 5,
-        //                             ),
-        //                             Text(
-        //                               '100.00',
-        //                               style: TextStyle(color: Colors.black.withOpacity(0.6),
-        //                                 decoration:
-        //                                 TextDecoration.lineThrough,),
-        //                             ),
-        //                             const Spacer(),
-        //                             Container(
-        //                               padding: const EdgeInsets.all(8),
-        //                               decoration: BoxDecoration(
-        //                                 borderRadius: BorderRadius.circular(8),
-        //                                 color: AppColors.primaryColor,
-        //                               ),
-        //                               child: const Text(
-        //                                 'Add to cart',
-        //                                 style: TextStyle(color: Colors.white),
-        //                               ),
-        //                             )
-        //                           ],
-        //                         )
-        //                       ],
-        //                     ),
-        //                   ),
-        //                 ),
-        //               );
-        //             },);
-        // }
+      
 
 ////ak
         Obx(() {
@@ -142,13 +57,13 @@ class AllProductView extends StatelessWidget {
                       )
                     : Image.asset('assets/images/tafnil.png',
                         fit: BoxFit.contain),
-                title: Text(product.productName),
+                title: Text(product.productName.toString()),
                 subtitle: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      product.productCategoryName,
+                      product.productCategoryName.toString(),
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -157,7 +72,7 @@ class AllProductView extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '1 ${product.unitName}',
+                          ' ${product.convertionName}',
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.6),
                             fontWeight: FontWeight.normal,
@@ -169,22 +84,39 @@ class AllProductView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          '৳${product.productSellingPrice.toStringAsFixed(2)}',
+                          '৳${product.productSellingPrice}',
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const Spacer(),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.green,
-                          ),
-                          child: const Text(
-                            'Add to cart',
-                            style: TextStyle(color: Colors.white),
+                        InkWell(
+                          onTap: () {
+                            CartManager().addToCart(
+                                int.parse(product.productSlNo.toString()),
+                                1,
+                                double.parse(product.productSlNo.toString()),
+                                product.productName.toString());
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Added to cart successfully!'),
+                                duration: const Duration(seconds: 2),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.green,
+                            ),
+                            child: const Text(
+                              'Add to cart',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ],

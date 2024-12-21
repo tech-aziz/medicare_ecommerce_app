@@ -1,7 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
+
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  String name = "Loading...";
+  String imageUrl = "";
+  String branch = "Loading...";
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+  }
+
+  Future<void> _loadProfileData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      name = prefs.getString('name') ?? 'Guest';
+      imageUrl = prefs.getString('image') ?? ""; // Default empty if no image
+      branch = prefs.getString('branch') ?? 'Not available';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +41,10 @@ class ProfileView extends StatelessWidget {
               // Circular profile photo
               CircleAvatar(
                 radius: 60,
-                backgroundImage: NetworkImage(
-                    "https://media.istockphoto.com/id/1682296067/photo/happy-studio-portrait-or-professional-man-real-estate-agent-or-asian-businessman-smile-for.jpg?s=1024x1024&w=is&k=20&c=y4FFqpMLolCvEqoxlr4oypQqhAL1ta0ojXUnOofQXHk="), // Add your image asset
+                backgroundImage: imageUrl.isNotEmpty
+                    ? NetworkImage(imageUrl)
+                    : AssetImage('assets/images/default_profile.png')
+                        as ImageProvider, // Default profile image
                 backgroundColor: Colors.grey[300],
               ),
               // Edit icon
@@ -43,7 +71,7 @@ class ProfileView extends StatelessWidget {
           SizedBox(height: 20),
           // User name
           Text(
-            "John Doe",
+            name,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -51,6 +79,19 @@ class ProfileView extends StatelessWidget {
           ),
           Divider(),
           SizedBox(height: 10),
+          // Branch
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(Icons.store, color: Colors.grey),
+              SizedBox(width: 8),
+              Text(
+                "Branch: $branch",
+                style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
           // Phone number
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -58,7 +99,7 @@ class ProfileView extends StatelessWidget {
               Icon(Icons.phone, color: Colors.grey),
               SizedBox(width: 8),
               Text(
-                "+1 123 456 7890",
+                "+1 123 456 7890", // Replace with actual phone data if available
                 style: TextStyle(fontSize: 18, color: Colors.grey[700]),
               ),
             ],
@@ -71,7 +112,7 @@ class ProfileView extends StatelessWidget {
               Icon(Icons.email, color: Colors.grey),
               SizedBox(width: 8),
               Text(
-                "johndoe@example.com",
+                "johndoe@example.com", // Replace with actual email if available
                 style: TextStyle(fontSize: 18, color: Colors.grey[700]),
               ),
             ],

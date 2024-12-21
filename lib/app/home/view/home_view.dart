@@ -5,7 +5,10 @@ import 'package:get/get.dart';
 import 'package:medicare_ecommerce_app/app/auth/login/view/login_view.dart';
 import 'package:medicare_ecommerce_app/app/get_started/get_started.dart';
 import 'package:medicare_ecommerce_app/app/profile/view/profile_view.dart';
+import 'package:medicare_ecommerce_app/utils/login_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../all_product/view/all_product_view.dart';
+import '../../auth/login/view/sign_in_as_user/sign_in_as_user.dart';
 import '../../bottom_pages/category_body/category_body.dart';
 import '../../bottom_pages/home_body/home_body_view.dart';
 import '../../cart/cart_view.dart';
@@ -30,6 +33,29 @@ class _HomeViewState extends State<HomeView> {
   bool isCheckedBeacon = false;
   bool isCheckedSKF = false;
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  Future<void> handleLogout(BuildContext context) async {
+    try {
+      // Clear SharedPreferences
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      print(prefs.getString("id"));
+      setState(() {});
+
+      // Navigate to the Sign-In screen
+      Get.offAll(() => const SignInAsUser());
+    } catch (e) {
+      // Display an error message if something goes wrong
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "An error occurred during logout: $e",
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   final List<Widget> pages = [
     const HomeBodyView(),
@@ -180,8 +206,8 @@ class _HomeViewState extends State<HomeView> {
                             const Icon(Icons.keyboard_arrow_right_rounded),
                       ),
                       ListTile(
-                        onTap: () {
-                          Get.offAll(GetStarted());
+                        onTap: () async {
+                          handleLogout(context);
                           // showAlertDialog(context)
                         },
                         title: displayMedium(
