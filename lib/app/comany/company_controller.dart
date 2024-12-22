@@ -5,39 +5,41 @@ import 'dart:convert';
 import 'package:medicare_ecommerce_app/app/bottom_pages/category_body/category_model.dart';
 import 'package:medicare_ecommerce_app/utils/urls.dart';
 
-import '../../all_product/view/product_model.dart';
+import '../all_product/view/product_model.dart';
+import 'company_model.dart';
 
 
-class CategoryController extends GetxController {
-  var categoryList = <CategoryModel>[].obs;
+
+class CompanyController extends GetxController {
+  var companyList = <CompanyModel>[].obs;
   final String defaultImage = 'assets/images/acme.png';
 
   @override
   void onInit() {
     super.onInit();
-    fetchCategories();
+    fetchCompanies();
   }
 
   String getCompanyName(String id) {
     String data = "";
-    categoryList.forEach((e) {
-      if (e.productCategorySlNo == id) {
-        data = e.productCategoryName.toString();
+    companyList.forEach((e) {
+      if (e.id == id) {
+        data = e.name;
       }
     });
     return data;
   }
 
-  void fetchCategories() async {
+  void fetchCompanies() async {
     try {
       final response = await http.get(
-        Uri.parse(AppURL.getCategories),
+        Uri.parse(AppURL.getCompanies),
       );
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
-        categoryList.value =
-            data.map((json) => CategoryModel.fromJson(json)).toList();
+        companyList.value =
+            data.map((json) => CompanyModel.fromJson(json)).toList();
       } else {
         Get.snackbar('Error', 'Failed to fetch companies');
       }

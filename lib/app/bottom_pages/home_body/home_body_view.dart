@@ -1,12 +1,20 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:medicare_ecommerce_app/app/all_product/all_product_view_2.dart';
+import 'package:medicare_ecommerce_app/app/all_product/view/all_product_view.dart';
 import 'package:medicare_ecommerce_app/app/all_product/view/product_controller.dart';
+import 'package:medicare_ecommerce_app/app/bottom_pages/banner_model.dart';
 import 'package:medicare_ecommerce_app/app/bottom_pages/category_body/category_body.dart';
 import 'package:medicare_ecommerce_app/app/bottom_pages/category_body/category_controller.dart';
 import 'package:medicare_ecommerce_app/app/cart/cart_manager.dart';
+import 'package:medicare_ecommerce_app/app/comany/company_view.dart';
 import 'package:medicare_ecommerce_app/app/res/color.dart';
-
+import 'package:http/http.dart' as http;
+import '../../../utils/urls.dart';
+import '../../comany/company_controller.dart';
 import '../category_body/category_wise_product.dart';
 
 class HomeBodyView extends StatefulWidget {
@@ -17,18 +25,36 @@ class HomeBodyView extends StatefulWidget {
 }
 
 class _HomeBodyViewState extends State<HomeBodyView> {
-  final List<String> sliderImageList = [
-    'https://imgscf.slidemembers.com/docs/1/1/213/free_google_slides_-_various_pills_212317.jpg',
-    'https://www.slideegg.com/image/catalog/50197-medical-powerpoint-presentation.png',
-    'https://www.slideegg.com/image/catalog/76274-medicine-ppt-templates-free-download.png',
-    'https://imgscf.slidemembers.com/docs/1/1/194/bottle_and_pills_-_free_ppt_templates_193827.jpg',
-    'https://slidesgo.net/wp-content/uploads/2021/01/Pills-On-the-leaf-Medical-PPT-Templates-1.png',
-  ];
+  // final List<String> sliderImageList = [
+  //   'https://imgscf.slidemembers.com/docs/1/1/213/free_google_slides_-_various_pills_212317.jpg',
+  //   'https://www.slideegg.com/image/catalog/50197-medical-powerpoint-presentation.png',
+  //   'https://www.slideegg.com/image/catalog/76274-medicine-ppt-templates-free-download.png',
+  //   'https://imgscf.slidemembers.com/docs/1/1/194/bottle_and_pills_-_free_ppt_templates_193827.jpg',
+  //   'https://slidesgo.net/wp-content/uploads/2021/01/Pills-On-the-leaf-Medical-PPT-Templates-1.png',
+  // ];
   final ScrollController scrollController = ScrollController();
+  List<BannerModel> sliderImageList = [];
+
+  fetchBanner() async {
+    final response = await http.get(
+      Uri.parse(AppURL.getBanner),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      setState(() {
+        sliderImageList =
+            data.map((item) => BannerModel.fromJson(item)).toList();
+      });
+    } else {
+      Get.snackbar('Error', 'Failed to fetch search results.');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    fetchBanner();
     // Fetch products initially
     final productController = Get.find<ProductController>();
     productController.fetchProducts();
@@ -61,22 +87,22 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.withOpacity(0.12),
-                ),
-                child: Text(
-                  'Place your order before dawn 5:00 to receive your item the same day.',
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.6),
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
+              // const SizedBox(height: 8),
+              // Container(
+              //   padding: const EdgeInsets.all(10),
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(12),
+              //     color: Colors.grey.withOpacity(0.12),
+              //   ),
+              //   child: Text(
+              //     'Place your order before dawn 5:00 to receive your item the same day.',
+              //     style: TextStyle(
+              //       color: Colors.black.withOpacity(0.6),
+              //       fontWeight: FontWeight.w400,
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(height: 16),
 
               // Carousel section
               CarouselSlider(
@@ -91,7 +117,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
-                      imageUrl,
+                      "https://app.tophealthpharma.com/uploads/banners/${imageUrl.imageName}",
                       height: 400,
                       width: size.width,
                       fit: BoxFit.cover,
@@ -117,7 +143,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   ),
                   TextButton(
                     onPressed: () {
-                      // Get.to(const CategoryBody());
+                      Get.to(const CompanyView());
                     },
                     child: Text(
                       'View all',
@@ -152,7 +178,8 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Get.to(CategoryWiseProduct(data: company.id, name : company.name));
+                                Get.to(CategoryWiseProduct(
+                                    data: company.id, name: company.name));
                               },
                               child: Container(
                                 padding:
@@ -161,12 +188,19 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                                   borderRadius: BorderRadius.circular(12),
                                   color: Colors.grey.withOpacity(0.1),
                                 ),
-                                child: Image.asset(
-                                  "assets/images/aci.png",
-                                  height: 100,
-                                  width: 100,
-                                  fit: BoxFit.contain,
-                                ),
+                                child: company.imageName == ''
+                                    ? Image.network(
+                                        "https://app.tophealthpharma.com/assets/no_image.gif",
+                                        height: 100,
+                                        width: 100,
+                                        fit: BoxFit.fill,
+                                      )
+                                    : Image.network(
+                                        "https://app.tophealthpharma.com/uploads/companies/${company.imageName}",
+                                        height: 100,
+                                        width: 100,
+                                        fit: BoxFit.fill,
+                                      ),
                               ),
                             ),
                             const SizedBox(height: 6),
@@ -200,7 +234,9 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(AllProductView2());
+                    },
                     child: Text(
                       'View all',
                       style: TextStyle(
@@ -237,10 +273,15 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                           color: Colors.grey.withOpacity(0.1),
                         ),
                         child: ListTile(
-                          leading: Image.asset(
-                            'assets/images/tafnil.png',
-                            fit: BoxFit.contain,
-                          ),
+                          leading: product.imageName == null
+                              ? Image.network(
+                                  "https://app.tophealthpharma.com/assets/no_image.gif",
+                                  fit: BoxFit.fill,
+                                )
+                              : Image.network(
+                                  "https://app.tophealthpharma.com/uploads/products/${product.imageName}",
+                                  fit: BoxFit.fill,
+                                ),
                           title: Text(companyController
                               .getCompanyName(product.companyId.toString())),
                           subtitle: Column(
@@ -301,7 +342,8 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                                           1,
                                           double.parse(
                                               product.productSlNo.toString()),
-                                          product.productName.toString());
+                                          product.productName.toString(),
+                                          product.imageName.toString());
 
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

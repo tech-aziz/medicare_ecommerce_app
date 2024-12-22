@@ -1,25 +1,48 @@
-class CompanyModel {
-  final String id;
-  final String name;
-  final String description;
-  final String status;
-  final String branchId;
+class CategoryModel {
+  String? productCategorySlNo;
+  String? productCategoryName;
+  String? productCategoryDescription;
+  String? status;
+  String? addBy;
+  String? addTime;
+  String? updateBy;
+  String? updateTime;
+  String? categoryBranchid;
 
-  CompanyModel({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.status,
-    required this.branchId,
-  });
+  CategoryModel(
+      {this.productCategorySlNo,
+      this.productCategoryName,
+      this.productCategoryDescription,
+      this.status,
+      this.addBy,
+      this.addTime,
+      this.updateBy,
+      this.updateTime,
+      this.categoryBranchid});
 
-  factory CompanyModel.fromJson(Map<String, dynamic> json) {
-    return CompanyModel(
-      id: json['id'] ?? '',
-      name: json['name'] ?? 'Unknown',
-      description: json['description'] ?? '',
-      status: json['status'] ?? '',
-      branchId: json['branch_id'] ?? '',
-    );
+  CategoryModel.fromJson(Map<String, dynamic> json) {
+    productCategorySlNo = json['ProductCategory_SlNo'];
+    productCategoryName = json['ProductCategory_Name'];
+    productCategoryDescription = json['ProductCategory_Description'];
+    status = json['status'];
+    addBy = json['AddBy'];
+    addTime = json['AddTime'];
+    updateBy = json['UpdateBy'];
+    updateTime = json['UpdateTime'];
+    categoryBranchid = json['category_branchid'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['ProductCategory_SlNo'] = this.productCategorySlNo;
+    data['ProductCategory_Name'] = this.productCategoryName;
+    data['ProductCategory_Description'] = this.productCategoryDescription;
+    data['status'] = this.status;
+    data['AddBy'] = this.addBy;
+    data['AddTime'] = this.addTime;
+    data['UpdateBy'] = this.updateBy;
+    data['UpdateTime'] = this.updateTime;
+    data['category_branchid'] = this.categoryBranchid;
+    return data;
   }
 }

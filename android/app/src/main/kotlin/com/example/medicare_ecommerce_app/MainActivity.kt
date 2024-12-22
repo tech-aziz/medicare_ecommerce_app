@@ -1,4 +1,4 @@
-package com.example.medicare_ecommerce_app
+package com.somrat.tophealthpharma
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -63,17 +63,17 @@ class _GetStartedState extends State<GetStarted> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            customButton(
-                onTap: () {},
-                borderColor: AppColors.primaryColor,
-                btnName: 'Get Started',
-                context: context,
-                color: AppColors.primaryColor,
-                textColor: Colors.white,
-                border: Border.all(color: AppColors.primaryColor, width: 1.8)),
-            const SizedBox(
-              height: 12,
-            ),
+            // customButton(
+            //     onTap: () {},
+            //     borderColor: AppColors.primaryColor,
+            //     btnName: 'Get Started',
+            //     context: context,
+            //     color: AppColors.primaryColor,
+            //     textColor: Colors.white,
+            //     border: Border.all(color: AppColors.primaryColor, width: 1.8)),
+            // const SizedBox(
+            //   height: 12,
+            // ),
             customButton(
                 onTap: () => Get.to(() => const SignInAsUser()),
                 borderColor: AppColors.primaryColor,

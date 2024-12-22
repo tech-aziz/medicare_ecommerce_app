@@ -3,29 +3,30 @@ import 'package:get/get.dart';
 import 'package:medicare_ecommerce_app/app/all_product/view/product_controller.dart';
 import 'package:medicare_ecommerce_app/app/bottom_pages/category_body/category_controller.dart';
 
-import '../../cart/cart_manager.dart';
+import '../cart/cart_manager.dart';
+import 'company_controller.dart';
 
-class CategoryWiseProduct extends StatefulWidget {
+class CompanyWiseProduct extends StatefulWidget {
   final String data;
   final String name;
-  const CategoryWiseProduct(
+  const CompanyWiseProduct(
       {super.key, required this.data, required this.name});
 
   @override
-  State<CategoryWiseProduct> createState() => _CategoryWiseProductState();
+  State<CompanyWiseProduct> createState() => _CompanyWiseProductState();
 }
 
-class _CategoryWiseProductState extends State<CategoryWiseProduct> {
+class _CompanyWiseProductState extends State<CompanyWiseProduct> {
   @override
   void initState() {
     super.initState();
-    final CategoryController productController = Get.put(CategoryController());
+    final CompanyController productController = Get.put(CompanyController());
     productController.fetchProducts(widget.data);
   }
 
   @override
   Widget build(BuildContext context) {
-    final CategoryController productController = Get.find<CategoryController>();
+    final CompanyController productController = Get.find<CompanyController>();
 
     return Scaffold(
       appBar: AppBar(
@@ -58,24 +59,20 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
                 child: ListTile(
                   leading: product.imageName != null
                       ? Image.network(
-                          'https://app.tophealthpharma.com/uploads/products/${product.imageName}',
+                          'https://example.com/images/${product.imageName}',
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) {
-                            // Show default image if network image fails to load
-                            return Image.network(
-                                'https://app.tophealthpharma.com/assets/no_image.gif',
+                            return Image.asset('assets/images/tafnil.png',
                                 fit: BoxFit.contain);
                           },
                         )
-                      : Image.network(
-                          'https://app.tophealthpharma.com/assets/no_image.gif',
+                      : Image.asset('assets/images/tafnil.png',
                           fit: BoxFit.contain),
                   title: Text(product.productName.toString()),
                   subtitle: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       Text(
                         product.productCategoryName.toString(),
                         style: const TextStyle(

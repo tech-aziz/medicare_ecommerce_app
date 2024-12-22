@@ -1,62 +1,69 @@
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../utils/cart_item_mode.dart';
 
 class CartManager {
-  final List<CartItem> cart = [];
+  /// Singleton instance to ensure global access and state persistence
+  static final CartManager _instance = CartManager._internal();
 
-  static const String _cartKey = "cart_data";
+  factory CartManager() => _instance;
+
+  CartManager._internal();
+
+  final List<CartItem> _cart = []; // Private cart list
+
+  /// Expose the cart as an unmodifiable list
+  List<CartItem> get cart => List.unmodifiable(_cart);
+  List<String> imagesCartProduct = [];
 
   /// Add or update product in the cart
-  Future<void> addToCart(
-      int productId, int quantity, double unitRate, String productName) async {
+  void addToCart(int productId, int quantity, double unitRate,
+      String productName, String productImage) {
     try {
       // Check if the product already exists in the cart
-      final newItem = CartItem(
-        productName: productName,
-        productId: productId,
-        quantity: quantity,
-        unitRate: unitRate,
-      );
-      cart.add(newItem);
+      final existingItemIndex =
+          _cart.indexWhere((item) => item.productId == productId);
 
-      // Save the updated cart to SharedPreferences
-      await saveCartToLocal();
+      if (existingItemIndex != -1) {
+        // Update the quantity of the existing product
+        _cart[existingItemIndex].quantity += quantity;
+      } else {
+        // Add the new product to the cart
+        final newItem = CartItem(
+          productName: productName,
+          productId: productId,
+          quantity: quantity,
+          unitRate: unitRate,
+        );
+        _cart.add(newItem);
+        imagesCartProduct.add(productImage);
+      }
     } catch (e) {
       print("Error adding to cart: $e");
     }
   }
 
-  /// Save cart to SharedPreferences
-  Future<void> saveCartToLocal() async {
+  /// Remove a product from the cart
+  void removeFromCart(int productId) {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final cartJson = jsonEncode(cart.map((item) => item.toJson()).toList());
-      await prefs.setString(_cartKey, cartJson);
-      print("Cart saved to local storage: $cartJson");
+      _cart.removeWhere((item) => item.productId == productId);
+      // imagesCartProduct.re
     } catch (e) {
-      print("Error saving cart to local storage: $e");
+      print("Error removing product from cart: $e");
     }
   }
 
-  /// Load cart from SharedPreferences
-
-  /// Get cart data as JSON
-  List<Map<String, dynamic>> getCartAsJson() {
-    return cart.map((item) => item.toJson()).toList();
+  /// Clear the cart
+  void clearCart() {
+    _cart.clear();
   }
 
-  /// Clear the cart and local storage
-  Future<void> clearCart() async {
-    cart.clear();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_cartKey);
-    print("Cart cleared from memory and local storage.");
-  }
+  /// Calculate subtotal
+  double get subtotal => _cart.fold(0, (sum, item) => sum + item.total);
+
+  /// Calculate total (modify if additional charges apply)
+  double get total => subtotal;
 
   @override
   String toString() {
-    return cart.map((item) => item.toString()).toList().toString();
+    return _cart.map((item) => item.toString()).toList().toString();
   }
 }

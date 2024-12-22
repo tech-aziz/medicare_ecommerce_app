@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/cart_item_mode.dart';
-import 'package:http/http.dart' as http;
 import '../res/component/custom_button.dart';
+import 'cart_manager.dart';
 
 class CartView extends StatefulWidget {
   const CartView({Key? key}) : super(key: key);
@@ -14,33 +15,39 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
+  final cartManager = CartManager(); // Access the singleton instance
+
+  /// Checkout order method
   void checkoutOrder(Map<String, dynamic> orderData) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     const String apiUrl =
         "https://app.tophealthpharma.com/api/v1/order_place"; // Replace with your actual API endpoint
 
     try {
-   
-
       // Make POST request
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': "Bearer ${preferences.getString("token")}"
+          'Authorization': "Bearer ${preferences.getString('token')}", // Replace as needed
         },
         body: jsonEncode(orderData),
       );
+
       debugPrint(response.statusCode.toString());
-      // Handle response
+
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         print(responseData);
+
         // Show success message
         Get.snackbar('Success', 'Order placed successfully!',
             snackPosition: SnackPosition.BOTTOM);
 
-        // Optionally, clear the cart or navigate to a success page
+        // Clear the cart
+        setState(() {
+          cartManager.clearCart();
+        });
       } else {
         // Show error message
         Get.snackbar('Error', 'Failed to place order. Please try again.',
@@ -49,15 +56,12 @@ class _CartViewState extends State<CartView> {
       }
     } catch (e) {
       // Handle any exceptions
-      Get.snackbar('Error', '$e',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', '$e', snackPosition: SnackPosition.BOTTOM);
       print('Exception: $e');
     }
   }
 
-  final List<CartItem> cart = [];
-
-  static const String _cartKey = "cart_data";
+  /// Show payment options
   void showPaymentOptions() {
     showModalBottomSheet(
       context: context,
@@ -79,30 +83,37 @@ class _CartViewState extends State<CartView> {
               ),
               const SizedBox(height: 16),
               ListTile(
-                leading: const Icon(Icons.money),
+                leading: Image.asset(
+                  "assets/icons/cash.png",
+                  height: 50,
+                  width: 50,
+                ),
                 title: const Text("Cash on Delivery"),
                 onTap: () {
                   final orderData = {
                     "order": {
-                      "orderDate": "2024-12-21",
-                      "subTotal": total,
+                      "orderDate": DateTime.now().toIso8601String(),
+                      "subTotal": cartManager.subtotal,
                       "discount": 0,
-                      "total": total,
-                      "paid": total,
-                      "payment_type": "bkash", // or "bkash"
+                      "total": cartManager.total,
+                      "paid": cartManager.total,
+                      "payment_type": "cod",
                       "note": "Order placed successfully",
                     },
-                    "cart": cart
+                    "cart":
+                        cartManager.cart.map((item) => item.toJson()).toList()
                   };
 
                   checkoutOrder(orderData);
                   Navigator.pop(context);
-
-                  // _showOrderSuccessSnackbar("Cash on Delivery");
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.payment),
+                leading: Image.asset(
+                  "assets/icons/bkash.png",
+                  height: 50,
+                  width: 50,
+                ),
                 title: const Text("Bkash"),
                 onTap: () {
                   Navigator.pop(context);
@@ -116,26 +127,7 @@ class _CartViewState extends State<CartView> {
     );
   }
 
-  /// Load cart from SharedPreferences
-  Future<void> loadCartFromLocal() async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final cartJson = prefs.getString(_cartKey);
-
-      if (cartJson != null) {
-        final List<dynamic> cartData = jsonDecode(cartJson);
-        cart.clear();
-        cart.addAll(cartData.map((item) => CartItem.fromJson(item)).toList());
-        setState(() {});
-        print("Cart loaded from local storage: $cart");
-      } else {
-        print("No cart data found in local storage.");
-      }
-    } catch (e) {
-      print("Error loading cart from local storage: $e");
-    }
-  }
-
+  /// Show success message
   void _showOrderSuccessSnackbar(String paymentMethod) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -147,35 +139,22 @@ class _CartViewState extends State<CartView> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    loadCartFromLocal();
-  }
-
-  /// Calculate subtotal, tax, and total
-  double get subtotal => cart.fold(0, (sum, item) => sum + item.total);
-  // double get tax => subtotal * 1; // 5% tax
-  double get total => subtotal;
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("My Cart"),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: cart.isEmpty
+        child: cartManager.cart.isEmpty
             ? const Center(child: Text("Your cart is empty!"))
             : SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ListView.builder(
-                      itemCount: cart.length,
+                      itemCount: cartManager.cart.length,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
+                        final item = cartManager.cart[index];
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 12),
                           child: Container(
@@ -184,64 +163,56 @@ class _CartViewState extends State<CartView> {
                               color: Colors.grey.withOpacity(0.1),
                             ),
                             child: ListTile(
-                              leading: Image.asset(
-                                'assets/images/tafnil.png',
-                                fit: BoxFit.contain,
+                              contentPadding: const EdgeInsets.all(8),
+                              leading: SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Image.asset(
+                                  'assets/images/tafnil.png',
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                               title: Text(
-                                cart[index].productName,
+                                item.productName,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                              subtitle: Text(
+                                "Price: ৳${item.unitRate * item.quantity}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Price: ৳${cart[index].unitRate}",
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              trailing: Container(
-                                width: 90,
+                              trailing: SizedBox(
+                                width: 110,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     IconButton(
                                       onPressed: () {
                                         setState(() {
-                                          cart[index].quantity--;
-                                          if (cart[index].quantity <= 0) {
-                                            cart.removeAt(index);
+                                          item.quantity--;
+                                          if (item.quantity <= 0) {
+                                            item.quantity++;
                                           }
                                         });
                                       },
-                                      icon: const Icon(
-                                        Icons.remove,
-                                        size: 12,
-                                      ),
+                                      icon: const Icon(Icons.remove, size: 16),
                                     ),
                                     Text(
-                                      cart[index].quantity.toString(),
-                                      style: const TextStyle(fontSize: 10),
+                                      item.quantity.toString(),
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                     IconButton(
                                       onPressed: () {
                                         setState(() {
-                                          cart[index].quantity++;
+                                          item.quantity++;
                                         });
                                       },
-                                      icon: const Icon(
-                                        Icons.add,
-                                        size: 10,
-                                      ),
+                                      icon: const Icon(Icons.add, size: 16),
                                     ),
                                   ],
                                 ),
@@ -250,27 +221,6 @@ class _CartViewState extends State<CartView> {
                           ),
                         );
                       },
-                    ),
-                    const SizedBox(height: 20),
-
-                    /// Coupon Code Section
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          labelText: "Apply Coupon Code",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.check_circle,
-                                color: Colors.green),
-                            onPressed: () {
-                              // Add coupon code functionality here
-                            },
-                          ),
-                        ),
-                      ),
                     ),
                     const SizedBox(height: 20),
 
@@ -288,24 +238,7 @@ class _CartViewState extends State<CartView> {
                                 style: TextStyle(fontSize: 16),
                               ),
                               Text(
-                                "৳${subtotal.toStringAsFixed(2)}",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Discount",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              Text(
-                                "৳ 0",
+                                "৳${cartManager.subtotal.toStringAsFixed(2)}",
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -325,7 +258,7 @@ class _CartViewState extends State<CartView> {
                                 ),
                               ),
                               Text(
-                                "৳${total.toStringAsFixed(2)}",
+                                "৳${cartManager.total.toStringAsFixed(2)}",
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -350,10 +283,7 @@ class _CartViewState extends State<CartView> {
           textColor: Colors.white,
           borderColor: Colors.transparent,
           context: context,
-          onTap: () {
-            // Handle checkout functionality
-            showPaymentOptions();
-          },
+          onTap: showPaymentOptions,
         ),
       ),
     );

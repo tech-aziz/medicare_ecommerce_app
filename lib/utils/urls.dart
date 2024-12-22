@@ -8,6 +8,10 @@ class AppURL {
   static const String register = "${baseURL}register";
   static const String login = "${baseURL}login";
 
+  static String getBanner = "${baseURL}getBanners";
+
+  static String getCategories = "${baseURL}getCategories";
+
 
 
 

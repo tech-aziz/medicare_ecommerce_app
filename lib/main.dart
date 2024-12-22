@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:medicare_ecommerce_app/app/get_started/get_started.dart';
 
 import 'app/admin/view/admin_home/home_view.dart';
 import 'app/admin/view/admin_home/manage_account/manage_account.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const RegistrationView(),
-      home: SplashView(),
+      home: GetStarted(),
       // home: const  HomeView(),
     );
   }

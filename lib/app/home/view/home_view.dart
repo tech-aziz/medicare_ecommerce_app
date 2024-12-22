@@ -61,7 +61,7 @@ class _HomeViewState extends State<HomeView> {
     const HomeBodyView(),
     const CategoryBody(),
     const AllProductView(),
-    const OrderView(),
+    // const OrderView(),
     const CartView(),
     const ProfileView(),
   ];
@@ -70,7 +70,7 @@ class _HomeViewState extends State<HomeView> {
     'Store Name',
     'Company',
     'Products',
-    'Orders',
+    // 'Orders',
     'Cart',
     'Account',
   ];
@@ -126,86 +126,6 @@ class _HomeViewState extends State<HomeView> {
                         otherAccountsPictures: const [],
                       ),
                       ListTile(
-                        onTap: () {
-                          Get.back();
-                        },
-                        title: displayMedium(
-                            data: 'Home',
-                            fontSize: 14,
-                            color: Colors.black,
-                            textAlign: TextAlign.start),
-                        leading: SvgPicture.asset(
-                          'assets/icons/home.svg',
-                          height: 20,
-                          width: 20,
-                          color: Colors.blue,
-                        ),
-                        trailing:
-                            const Icon(Icons.keyboard_arrow_right_rounded),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        title: displayMedium(
-                            data: 'About App',
-                            fontSize: 14,
-                            color: Colors.black,
-                            textAlign: TextAlign.start),
-                        leading: Image.asset(
-                          'assets/icons/about_app.png',
-                          height: 20,
-                          width: 20,
-                          color: Colors.blue,
-                        ),
-                        trailing:
-                            const Icon(Icons.keyboard_arrow_right_rounded),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        title: displayMedium(
-                            data: 'Privacy Policy',
-                            fontSize: 14,
-                            color: Colors.black,
-                            textAlign: TextAlign.start),
-                        leading: const Icon(
-                          Icons.privacy_tip_outlined,
-                          color: Colors.blue,
-                          size: 22,
-                        ),
-                        trailing:
-                            const Icon(Icons.keyboard_arrow_right_rounded),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        title: displayMedium(
-                            data: 'Feedback',
-                            fontSize: 14,
-                            color: Colors.black,
-                            textAlign: TextAlign.start),
-                        leading: Image.asset(
-                          'assets/icons/term_condition.png',
-                          height: 20,
-                          width: 20,
-                          color: Colors.blue,
-                        ),
-                        trailing:
-                            const Icon(Icons.keyboard_arrow_right_rounded),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        title: displayMedium(
-                            data: 'Rating',
-                            fontSize: 14,
-                            color: Colors.black,
-                            textAlign: TextAlign.start),
-                        leading: const Icon(
-                          Icons.star_border_purple500_sharp,
-                          color: Colors.blue,
-                          size: 22,
-                        ),
-                        trailing:
-                            const Icon(Icons.keyboard_arrow_right_rounded),
-                      ),
-                      ListTile(
                         onTap: () async {
                           handleLogout(context);
                           // showAlertDialog(context)
@@ -226,8 +146,10 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       ListTile(
                         onTap: () {
+                          Get.snackbar(
+                              'Account Deleted Request', 'Sucessfully');
                           print('Account deleted');
-                          Get.back();
+                          // Get.back();
                         },
                         title: displayMedium(
                             data: 'Delete account',
@@ -263,193 +185,193 @@ class _HomeViewState extends State<HomeView> {
               ),
             )
           : null,
-      endDrawer: _currentIndex == 0
-          ? Drawer(
-              child: ListView(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Filter By',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Recent Products',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
-                        Switch(
-                          value: isSwitched,
-                          onChanged: (value) {
-                            setState(() {
-                              isSwitched = value;
-                            });
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  const Divider(),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Company',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Container(
-                      height: 40,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey, width: 1),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: const Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                            ),
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  hintText: 'Search Product ',
-                                  border: InputBorder.none),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'ACI LTD.',
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.6),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Checkbox(
-                          value: isCheckedACI,
-                          focusColor: AppColors.primaryColor,
-                          activeColor: AppColors.primaryColor,
-                          onChanged: (newValue) {
-                            setState(() {
-                              isCheckedACI = newValue!;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    thickness: 4,
-                    color: Colors.black.withOpacity(0.1),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Beacon PLC.',
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.6),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Checkbox(
-                          value: isCheckedBeacon,
-                          focusColor: AppColors.primaryColor,
-                          activeColor: AppColors.primaryColor,
-                          onChanged: (newValue) {
-                            setState(() {
-                              isCheckedBeacon = newValue!;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    thickness: 4,
-                    color: Colors.black.withOpacity(0.1),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'SK-F LTD.',
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.6),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Checkbox(
-                          value: isCheckedSKF,
-                          focusColor: AppColors.primaryColor,
-                          activeColor: AppColors.primaryColor,
-                          onChanged: (newValue) {
-                            setState(() {
-                              isCheckedSKF = newValue!;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    thickness: 4,
-                    color: Colors.black.withOpacity(0.1),
-                  ),
-                ],
-              ),
-            )
-          : null,
+      // endDrawer: _currentIndex == 0
+      //     ? Drawer(
+      //         child: ListView(
+      //           children: [
+      //             const Padding(
+      //               padding: EdgeInsets.symmetric(horizontal: 15),
+      //               child: Row(
+      //                 children: [
+      //                   Text(
+      //                     'Filter By',
+      //                     style: TextStyle(
+      //                         color: Colors.black,
+      //                         fontWeight: FontWeight.bold,
+      //                         fontSize: 16),
+      //                   )
+      //                 ],
+      //               ),
+      //             ),
+      //             Padding(
+      //               padding: const EdgeInsets.symmetric(horizontal: 15),
+      //               child: Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children: [
+      //                   const Text(
+      //                     'Recent Products',
+      //                     style: TextStyle(
+      //                         color: Colors.black,
+      //                         fontWeight: FontWeight.bold,
+      //                         fontSize: 16),
+      //                   ),
+      //                   Switch(
+      //                     value: isSwitched,
+      //                     onChanged: (value) {
+      //                       setState(() {
+      //                         isSwitched = value;
+      //                       });
+      //                     },
+      //                   )
+      //                 ],
+      //               ),
+      //             ),
+      //             const Divider(),
+      //             const Padding(
+      //               padding: EdgeInsets.symmetric(horizontal: 15),
+      //               child: Row(
+      //                 children: [
+      //                   Text(
+      //                     'Company',
+      //                     style: TextStyle(
+      //                         color: Colors.black,
+      //                         fontWeight: FontWeight.bold,
+      //                         fontSize: 16),
+      //                   )
+      //                 ],
+      //               ),
+      //             ),
+      //             const SizedBox(
+      //               height: 12,
+      //             ),
+      //             Padding(
+      //               padding: const EdgeInsets.symmetric(horizontal: 15),
+      //               child: Container(
+      //                 height: 40,
+      //                 width: double.infinity,
+      //                 decoration: BoxDecoration(
+      //                     color: Colors.white,
+      //                     border: Border.all(color: Colors.grey, width: 1),
+      //                     borderRadius: BorderRadius.circular(8)),
+      //                 child: const Row(
+      //                   children: [
+      //                     Padding(
+      //                       padding: EdgeInsets.symmetric(
+      //                         horizontal: 8.0,
+      //                       ),
+      //                       child: Icon(
+      //                         Icons.search,
+      //                         color: Colors.grey,
+      //                       ),
+      //                     ),
+      //                     Expanded(
+      //                       child: TextField(
+      //                         decoration: InputDecoration(
+      //                             hintText: 'Search Product ',
+      //                             border: InputBorder.none),
+      //                       ),
+      //                     )
+      //                   ],
+      //                 ),
+      //               ),
+      //             ),
+      //             const SizedBox(
+      //               height: 12,
+      //             ),
+      //             Padding(
+      //               padding: const EdgeInsets.symmetric(horizontal: 15),
+      //               child: Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children: [
+      //                   Text(
+      //                     'ACI LTD.',
+      //                     style: TextStyle(
+      //                       color: Colors.black.withOpacity(0.6),
+      //                       fontWeight: FontWeight.bold,
+      //                       fontSize: 16,
+      //                     ),
+      //                   ),
+      //                   Checkbox(
+      //                     value: isCheckedACI,
+      //                     focusColor: AppColors.primaryColor,
+      //                     activeColor: AppColors.primaryColor,
+      //                     onChanged: (newValue) {
+      //                       setState(() {
+      //                         isCheckedACI = newValue!;
+      //                       });
+      //                     },
+      //                   ),
+      //                 ],
+      //               ),
+      //             ),
+      //             Divider(
+      //               thickness: 4,
+      //               color: Colors.black.withOpacity(0.1),
+      //             ),
+      //             Padding(
+      //               padding: const EdgeInsets.symmetric(horizontal: 15),
+      //               child: Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children: [
+      //                   Text(
+      //                     'Beacon PLC.',
+      //                     style: TextStyle(
+      //                       color: Colors.black.withOpacity(0.6),
+      //                       fontWeight: FontWeight.bold,
+      //                       fontSize: 16,
+      //                     ),
+      //                   ),
+      //                   Checkbox(
+      //                     value: isCheckedBeacon,
+      //                     focusColor: AppColors.primaryColor,
+      //                     activeColor: AppColors.primaryColor,
+      //                     onChanged: (newValue) {
+      //                       setState(() {
+      //                         isCheckedBeacon = newValue!;
+      //                       });
+      //                     },
+      //                   ),
+      //                 ],
+      //               ),
+      //             ),
+      //             Divider(
+      //               thickness: 4,
+      //               color: Colors.black.withOpacity(0.1),
+      //             ),
+      //             Padding(
+      //               padding: const EdgeInsets.symmetric(horizontal: 15),
+      //               child: Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children: [
+      //                   Text(
+      //                     'SK-F LTD.',
+      //                     style: TextStyle(
+      //                       color: Colors.black.withOpacity(0.6),
+      //                       fontWeight: FontWeight.bold,
+      //                       fontSize: 16,
+      //                     ),
+      //                   ),
+      //                   Checkbox(
+      //                     value: isCheckedSKF,
+      //                     focusColor: AppColors.primaryColor,
+      //                     activeColor: AppColors.primaryColor,
+      //                     onChanged: (newValue) {
+      //                       setState(() {
+      //                         isCheckedSKF = newValue!;
+      //                       });
+      //                     },
+      //                   ),
+      //                 ],
+      //               ),
+      //             ),
+      //             Divider(
+      //               thickness: 4,
+      //               color: Colors.black.withOpacity(0.1),
+      //             ),
+      //           ],
+      //         ),
+      //       )
+      //     : null,
       appBar: AppBar(
         title: _currentIndex == 0
             ? InkWell(
@@ -501,43 +423,23 @@ class _HomeViewState extends State<HomeView> {
                 tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
               )
             : null,
-        actions: _currentIndex == 0
-            ? [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          openDialer("+8801814556688");
-                        },
-                        icon: SvgPicture.asset(
-                          'assets/icons/phone.svg',
-                          height: 25,
-                          width: 25,
-                          color: Colors.white,
-                        )),
-                    IconButton(
-                        onPressed: () {
-                          Get.to(() => const NotificationView());
-                        },
-                        icon: Image.asset(
-                          'assets/icons/notification.png',
-                          height: 26,
-                          width: 26,
-                          color: Colors.white,
-                        )),
-                    IconButton(
-                        onPressed: () =>
-                            scaffoldKey.currentState?.openEndDrawer(),
-                        icon: SvgPicture.asset('assets/icons/filter.svg',
-                            height: 25, width: 25, color: Colors.white)),
-                    const SizedBox(
-                      width: 6,
-                    ),
-                  ],
-                )
-              ]
-            : null,
+        // actions: _currentIndex == 0
+        //     ? [
+        //         Row(
+        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //           children: [
+        //             IconButton(
+        //                 onPressed: () =>
+        //                     scaffoldKey.currentState?.openEndDrawer(),
+        //                 icon: SvgPicture.asset('assets/icons/filter.svg',
+        //                     height: 25, width: 25, color: Colors.white)),
+        //             const SizedBox(
+        //               width: 6,
+        //             ),
+        //           ],
+        //         )
+        //       ]
+        //     : null,
       ),
       body: (_currentIndex >= 0 && _currentIndex < pages.length)
           ? pages[_currentIndex]
@@ -596,23 +498,23 @@ class _HomeViewState extends State<HomeView> {
               icon: Icon(Icons.all_inbox),
               label: 'Products',
             ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/order.svg',
-                height: 22,
-                width: 22,
-                color: _currentIndex == 3
-                    ? Colors.blue
-                    : Colors.grey.withOpacity(0.8),
-              ),
-              label: 'Orders',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: SvgPicture.asset(
+            //     'assets/icons/order.svg',
+            //     height: 22,
+            //     width: 22,
+            //     color: _currentIndex == 3
+            //         ? Colors.blue
+            //         : Colors.grey.withOpacity(0.8),
+            //   ),
+            //   label: 'Orders',
+            // ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 'assets/icons/shopping-cart.svg',
                 height: 22,
                 width: 22,
-                color: _currentIndex == 4
+                color: _currentIndex == 3
                     ? Colors.blue
                     : Colors.grey.withOpacity(0.8),
               ),
@@ -623,11 +525,11 @@ class _HomeViewState extends State<HomeView> {
                 'assets/icons/account.svg',
                 height: 22,
                 width: 22,
-                color: _currentIndex == 5
+                color: _currentIndex == 4
                     ? Colors.blue
                     : Colors.grey.withOpacity(0.8),
               ),
-              label: 'Account',
+              label: 'Profile',
             ),
           ],
         ),

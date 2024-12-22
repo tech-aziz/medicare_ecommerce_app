@@ -46,26 +46,30 @@ class _ProfileViewState extends State<ProfileView> {
                     : AssetImage('assets/images/default_profile.png')
                         as ImageProvider, // Default profile image
                 backgroundColor: Colors.grey[300],
-              ),
-              // Edit icon
-              Positioned(
-                bottom: 5,
-                right: 10,
-                child: InkWell(
-                  onTap: () {
-                    // Add functionality for editing photo
-                  },
-                  child: CircleAvatar(
-                    radius: 18,
-                    backgroundColor: Colors.blue,
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
+                child: Icon(
+                  Icons.person,
+                  size: 40,
                 ),
               ),
+              // Edit icon
+              // Positioned(
+              //   bottom: 5,
+              //   right: 10,
+              //   child: InkWell(
+              //     onTap: () {
+              //       // Add functionality for editing photo
+              //     },
+              //     child: CircleAvatar(
+              //       radius: 18,
+              //       backgroundColor: Colors.blue,
+              //       child: Icon(
+              //         Icons.edit,
+              //         color: Colors.white,
+              //         size: 20,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           SizedBox(height: 20),
