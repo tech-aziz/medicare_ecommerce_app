@@ -15,7 +15,7 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  final controller = SplashController();
+  final controller = Get.put(SplashController());
   void splashToHome() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     try {
@@ -46,9 +46,10 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   void initState() {
-    splashToHome();
+    
     // TODO: implement initState
     super.initState();
+    splashToHome();
   }
 
   @override

@@ -15,11 +15,11 @@ class RegistrationController extends GetxController {
         Uri.parse(url),
         body: model.toJson(),
       );
-
+      debugPrint(response.statusCode.toString());
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
+        debugPrint(body);
         if (body['status'] == true) {
-         
           Get.snackbar(
             "Success",
             body['message'],
@@ -33,8 +33,7 @@ class RegistrationController extends GetxController {
 
           Get.off(() => const SignInAsUser());
         } else {
-          
-           Get.snackbar(
+          Get.snackbar(
             "Error",
             body['message'],
             backgroundColor: Colors.red,
@@ -46,7 +45,6 @@ class RegistrationController extends GetxController {
           );
         }
       } else {
-         
         Get.snackbar(
           "Error",
           'Failed to register user.',
@@ -59,7 +57,6 @@ class RegistrationController extends GetxController {
         );
       }
     } catch (e) {
-       
       Get.snackbar(
         "Error",
         'An unexpected error occurred: $e',

@@ -1,7 +1,7 @@
 import '../../utils/cart_item_mode.dart';
 
 class CartManager {
-  /// Singleton instance to ensure global access and state persistence
+  /// Singleton instance for global access and state persistence
   static final CartManager _instance = CartManager._internal();
 
   factory CartManager() => _instance;
@@ -9,14 +9,24 @@ class CartManager {
   CartManager._internal();
 
   final List<CartItem> _cart = []; // Private cart list
+  final List<String> imagesCartProduct = [];
+
+  double _total = 0.0; // Private total field
 
   /// Expose the cart as an unmodifiable list
   List<CartItem> get cart => List.unmodifiable(_cart);
-  List<String> imagesCartProduct = [];
+
+  /// Getter for the total value
+  double get total => _total;
 
   /// Add or update product in the cart
-  void addToCart(int productId, int quantity, double unitRate,
-      String productName, String productImage) {
+  void addToCart({
+    required int productId,
+    required int quantity,
+    required double unitRate,
+    required String productName,
+    required String productImage,
+  }) {
     try {
       // Check if the product already exists in the cart
       final existingItemIndex =
@@ -36,16 +46,49 @@ class CartManager {
         _cart.add(newItem);
         imagesCartProduct.add(productImage);
       }
+
+      // Recalculate the total
+      _updateTotalValue();
     } catch (e) {
       print("Error adding to cart: $e");
+    }
+  }
+
+  /// Increase quantity for a specific product
+  void increaseQuantity(int productId) {
+    final index = _cart.indexWhere((item) => item.productId == productId);
+    if (index != -1) {
+      _cart[index].quantity++;
+      _updateTotalValue();
+    }
+  }
+
+  /// Decrease quantity for a specific product
+  void decreaseQuantity(int productId) {
+    final index = _cart.indexWhere((item) => item.productId == productId);
+    if (index != -1) {
+      _cart[index].quantity--;
+      if (_cart[index].quantity <= 0) {
+        _cart.removeAt(index); // Remove item if quantity is zero
+        imagesCartProduct.removeAt(index);
+      }
+      _updateTotalValue();
     }
   }
 
   /// Remove a product from the cart
   void removeFromCart(int productId) {
     try {
-      _cart.removeWhere((item) => item.productId == productId);
-      // imagesCartProduct.re
+      final existingItemIndex =
+          _cart.indexWhere((item) => item.productId == productId);
+
+      if (existingItemIndex != -1) {
+        _cart.removeAt(existingItemIndex);
+        imagesCartProduct.removeAt(existingItemIndex);
+      }
+
+      // Recalculate the total
+      _updateTotalValue();
     } catch (e) {
       print("Error removing product from cart: $e");
     }
@@ -54,13 +97,17 @@ class CartManager {
   /// Clear the cart
   void clearCart() {
     _cart.clear();
+    imagesCartProduct.clear();
+
+    // Reset the total
+    _updateTotalValue();
   }
 
-  /// Calculate subtotal
-  double get subtotal => _cart.fold(0, (sum, item) => sum + item.total);
-
-  /// Calculate total (modify if additional charges apply)
-  double get total => subtotal;
+  /// Recalculate the total value based on the current cart items
+  void _updateTotalValue() {
+    _total = _cart.fold(0, (sum, item) => sum + (item.unitRate * item.quantity));
+    print("Updated total: $_total");
+  }
 
   @override
   String toString() {

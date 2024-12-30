@@ -12,6 +12,7 @@ class _ProfileViewState extends State<ProfileView> {
   String name = "Loading...";
   String imageUrl = "";
   String branch = "Loading...";
+  String phone = "";
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _ProfileViewState extends State<ProfileView> {
       name = prefs.getString('name') ?? 'Guest';
       imageUrl = prefs.getString('image') ?? ""; // Default empty if no image
       branch = prefs.getString('branch') ?? 'Not available';
+      phone = prefs.getString("phone") ?? "";
     });
   }
 
@@ -103,7 +105,7 @@ class _ProfileViewState extends State<ProfileView> {
               Icon(Icons.phone, color: Colors.grey),
               SizedBox(width: 8),
               Text(
-                "+1 123 456 7890", // Replace with actual phone data if available
+                "${phone}", // Replace with actual phone data if available
                 style: TextStyle(fontSize: 18, color: Colors.grey[700]),
               ),
             ],

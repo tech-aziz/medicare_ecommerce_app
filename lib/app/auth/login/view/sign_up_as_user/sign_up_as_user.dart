@@ -30,6 +30,7 @@ class _SignUpAsUserState extends State<SignUpAsUser> {
   bool _isPasswordVisible = false; // State variable for password visibility
 
   void _register() {
+    print("register tapp");
     if (_formKey.currentState!.validate()) {
       final model = RegistrationModel(
         storeName: _storeNameController.text,

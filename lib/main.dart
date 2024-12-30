@@ -7,9 +7,9 @@ import 'app/admin/view/admin_home/manage_account/manage_account.dart';
 import 'app/splash/splash_view.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();  // Ensure initialization
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -24,8 +24,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const RegistrationView(),
-      home: GetStarted(),
+      home: SplashView(),
       // home: const  HomeView(),
     );
   }
 }
+
+

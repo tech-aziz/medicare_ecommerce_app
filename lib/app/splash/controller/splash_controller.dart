@@ -7,10 +7,10 @@ import '../../get_started/get_started.dart';
 
 class SplashController extends GetxController {
   @override
-  // void onInit() {
-  //   super.onInit();
-  //   splashToHome();
-  // }
+  void onInit() {
+    super.onInit();
+    splashToHome();
+  }
 
   void splashToHome() async {
     try {

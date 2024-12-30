@@ -25,13 +25,6 @@ class HomeBodyView extends StatefulWidget {
 }
 
 class _HomeBodyViewState extends State<HomeBodyView> {
-  // final List<String> sliderImageList = [
-  //   'https://imgscf.slidemembers.com/docs/1/1/213/free_google_slides_-_various_pills_212317.jpg',
-  //   'https://www.slideegg.com/image/catalog/50197-medical-powerpoint-presentation.png',
-  //   'https://www.slideegg.com/image/catalog/76274-medicine-ppt-templates-free-download.png',
-  //   'https://imgscf.slidemembers.com/docs/1/1/194/bottle_and_pills_-_free_ppt_templates_193827.jpg',
-  //   'https://slidesgo.net/wp-content/uploads/2021/01/Pills-On-the-leaf-Medical-PPT-Templates-1.png',
-  // ];
   final ScrollController scrollController = ScrollController();
   List<BannerModel> sliderImageList = [];
 
@@ -87,24 +80,6 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // const SizedBox(height: 8),
-              // Container(
-              //   padding: const EdgeInsets.all(10),
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(12),
-              //     color: Colors.grey.withOpacity(0.12),
-              //   ),
-              //   child: Text(
-              //     'Place your order before dawn 5:00 to receive your item the same day.',
-              //     style: TextStyle(
-              //       color: Colors.black.withOpacity(0.6),
-              //       fontWeight: FontWeight.w400,
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(height: 16),
-
-              // Carousel section
               CarouselSlider(
                 options: CarouselOptions(
                   enlargeCenterPage: true,
@@ -182,25 +157,23 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                                     data: company.id, name: company.name));
                               },
                               child: Container(
+                                height: 100,
+                                width: 100,
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Colors.grey.withOpacity(0.1),
-                                ),
-                                child: company.imageName == ''
-                                    ? Image.network(
-                                        "https://app.tophealthpharma.com/assets/no_image.gif",
-                                        height: 100,
-                                        width: 100,
-                                        fit: BoxFit.fill,
-                                      )
-                                    : Image.network(
-                                        "https://app.tophealthpharma.com/uploads/companies/${company.imageName}",
-                                        height: 100,
-                                        width: 100,
-                                        fit: BoxFit.fill,
-                                      ),
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.grey.withOpacity(0.1),
+                                    image: DecorationImage(
+                                      image: company.imageName == ''
+                                          ? NetworkImage(
+                                              "https://app.tophealthpharma.com/assets/no_image.gif",
+                                            )
+                                          : NetworkImage(
+                                              "https://app.tophealthpharma.com/uploads/companies/${company.imageName}",
+                                            ),
+                                      fit: BoxFit.fill,
+                                    )),
                               ),
                             ),
                             const SizedBox(height: 6),
@@ -209,7 +182,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                               style: TextStyle(
                                 color: Colors.black.withOpacity(0.9),
                                 fontWeight: FontWeight.w700,
-                                fontSize: 14.1,
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -303,47 +276,59 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                                     ),
                                   ),
                                   const SizedBox(width: 5),
-                                  Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      color: Colors.red.withOpacity(0.2),
-                                    ),
-                                    child: const Text(
-                                      '+10% Discount',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ),
+                                  product.discount == "0"
+                                      ? SizedBox.shrink()
+                                      : Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            color: Colors.red.withOpacity(0.2),
+                                          ),
+                                          child: Text(
+                                            '${product.discount}% Discount',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        ),
                                 ],
                               ),
                               Row(
                                 children: [
                                   Text(
-                                    '৳${product.productSellingPrice}',
+                                    '৳${double.parse(product.productSellingPrice.toString()) * double.parse(product.perUnit.toString())}',
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const SizedBox(width: 5),
-                                  Text(
-                                    '৳100.00',
-                                    style: TextStyle(
-                                      color: Colors.black.withOpacity(0.6),
-                                      decoration: TextDecoration.lineThrough,
-                                    ),
-                                  ),
+                                  product.discountAmount == "0.00"
+                                      ? SizedBox.shrink()
+                                      : Text(
+                                          '৳${product.discountAmount}',
+                                          style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.6),
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                          ),
+                                        ),
                                   const Spacer(),
                                   InkWell(
                                     onTap: () {
                                       CartManager().addToCart(
-                                          int.parse(
+                                          productId: int.parse(
                                               product.productSlNo.toString()),
-                                          1,
-                                          double.parse(
-                                              product.productSlNo.toString()),
-                                          product.productName.toString(),
-                                          product.imageName.toString());
+                                          quantity: 1,
+                                          unitRate: double.parse(
+                                                  product.perUnit.toString()) *
+                                              double.parse(product
+                                                  .productSellingPrice
+                                                  .toString()),
+                                          productName:
+                                              product.productName.toString(),
+                                          productImage:
+                                              product.imageName.toString());
 
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -359,7 +344,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        color: AppColors.primaryColor,
+                                        color: Colors.blue,
                                       ),
                                       child: const Text(
                                         'Add to cart',

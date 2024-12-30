@@ -61,16 +61,16 @@ class _HomeViewState extends State<HomeView> {
     const HomeBodyView(),
     const CategoryBody(),
     const AllProductView(),
-    // const OrderView(),
+    OrderView(),
     const CartView(),
     const ProfileView(),
   ];
 
   final List<String> _titles = [
     'Store Name',
-    'Company',
+    'Category',
     'Products',
-    // 'Orders',
+    'Orders',
     'Cart',
     'Account',
   ];
@@ -105,7 +105,7 @@ class _HomeViewState extends State<HomeView> {
                               )),
                         ),
                         accountEmail: const Text(
-                          'medicare@gmail.com',
+                          '',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.black,
@@ -113,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         currentAccountPicture: const CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/empty.jpg'),
+                              AssetImage('assets/icons/splash_icon.jpeg'),
                         ),
                         decoration: const BoxDecoration(
                           image: DecorationImage(
@@ -141,8 +141,6 @@ class _HomeViewState extends State<HomeView> {
                           width: 20,
                           color: Colors.blue,
                         ),
-                        trailing:
-                            const Icon(Icons.keyboard_arrow_right_rounded),
                       ),
                       ListTile(
                         onTap: () {
@@ -162,8 +160,6 @@ class _HomeViewState extends State<HomeView> {
                           width: 22,
                           color: Colors.blue,
                         ),
-                        trailing:
-                            const Icon(Icons.keyboard_arrow_right_rounded),
                       ),
                       const Spacer(),
                       Padding(
@@ -423,23 +419,6 @@ class _HomeViewState extends State<HomeView> {
                 tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
               )
             : null,
-        // actions: _currentIndex == 0
-        //     ? [
-        //         Row(
-        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //           children: [
-        //             IconButton(
-        //                 onPressed: () =>
-        //                     scaffoldKey.currentState?.openEndDrawer(),
-        //                 icon: SvgPicture.asset('assets/icons/filter.svg',
-        //                     height: 25, width: 25, color: Colors.white)),
-        //             const SizedBox(
-        //               width: 6,
-        //             ),
-        //           ],
-        //         )
-        //       ]
-        //     : null,
       ),
       body: (_currentIndex >= 0 && _currentIndex < pages.length)
           ? pages[_currentIndex]
@@ -451,89 +430,89 @@ class _HomeViewState extends State<HomeView> {
             topRight: Radius.circular(25),
             topLeft: Radius.circular(25),
           ),
+          gradient: LinearGradient(
+            colors: [Colors.blueAccent, Colors.lightBlue],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.grey.shade200,
+          backgroundColor: Colors.transparent,
           currentIndex: _currentIndex,
           onTap: (index) {
-            if (index >= 0 && index < pages.length) {
-              setState(() {
-                _currentIndex = index;
-              });
-            }
+            setState(() {
+              _currentIndex = index;
+            });
           },
-          // To show all items with text
-          selectedItemColor: Colors.blueAccent,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
           elevation: 0,
-          unselectedLabelStyle: const TextStyle(color: Colors.grey),
-          selectedLabelStyle: TextStyle(
-              color: AppColors.primaryColor,
-              fontWeight: FontWeight.normal,
-              fontFamily: 'TiroBangla-Italic'),
+          unselectedLabelStyle: const TextStyle(color: Colors.white70),
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
           items: [
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/home.svg',
-                height: 22,
-                width: 22,
-                color: _currentIndex == 0
-                    ? Colors.blue
-                    : Colors.grey.withOpacity(0.8),
-              ),
+            _buildNavBarItem(
+              icon: 'assets/icons/home.svg',
               label: 'Home',
+              index: 0,
             ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/category.svg',
-                height: 22,
-                width: 22,
-                color: _currentIndex == 1
-                    ? Colors.blue
-                    : Colors.grey.withOpacity(0.8),
-              ),
+            _buildNavBarItem(
+              icon: 'assets/icons/category.svg',
               label: 'Category',
+              index: 1,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.all_inbox),
+            _buildNavBarItem(
+              icon: 'assets/icons/box.svg',
               label: 'Products',
+              index: 2,
             ),
-            // BottomNavigationBarItem(
-            //   icon: SvgPicture.asset(
-            //     'assets/icons/order.svg',
-            //     height: 22,
-            //     width: 22,
-            //     color: _currentIndex == 3
-            //         ? Colors.blue
-            //         : Colors.grey.withOpacity(0.8),
-            //   ),
-            //   label: 'Orders',
-            // ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/shopping-cart.svg',
-                height: 22,
-                width: 22,
-                color: _currentIndex == 3
-                    ? Colors.blue
-                    : Colors.grey.withOpacity(0.8),
-              ),
+            _buildNavBarItem(
+              icon: 'assets/icons/order.svg',
+              label: 'Orders',
+              index: 3,
+            ),
+            _buildNavBarItem(
+              icon: 'assets/icons/shopping-cart.svg',
               label: 'Cart',
+              index: 4,
             ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/account.svg',
-                height: 22,
-                width: 22,
-                color: _currentIndex == 4
-                    ? Colors.blue
-                    : Colors.grey.withOpacity(0.8),
-              ),
+            _buildNavBarItem(
+              icon: 'assets/icons/account.svg',
               label: 'Profile',
+              index: 5,
             ),
           ],
         ),
       ),
+    );
+  }
+
+  BottomNavigationBarItem _buildNavBarItem({
+    required String icon,
+    required String label,
+    required int index,
+  }) {
+    return BottomNavigationBarItem(
+      icon: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        decoration: BoxDecoration(
+          color: _currentIndex == index ? Colors.white : Colors.transparent,
+          shape: BoxShape.circle,
+        ),
+        padding: const EdgeInsets.all(8),
+        child: SvgPicture.asset(
+          icon,
+          height: _currentIndex == index ? 28 : 22,
+          width: _currentIndex == index ? 28 : 22,
+          color: _currentIndex == index ? Colors.blueAccent : Colors.white,
+        ),
+      ),
+      label: label,
     );
   }
 }

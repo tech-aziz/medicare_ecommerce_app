@@ -108,10 +108,12 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
                           InkWell(
                             onTap: () {
                               CartManager().addToCart(
-                                  int.parse(product.productSlNo.toString()),
-                                  1,
-                                  double.parse(product.productSlNo.toString()),
-                                  product.productName.toString(), product.imageName.toString());
+                                    productId: int.parse(product.productSlNo.toString()),
+                                      
+                                     quantity:  1,
+                                     unitRate:  double.parse(
+                                          product.perUnit.toString()) * double.parse(product.productSellingPrice.toString()),
+                                     productName:  product.productName.toString(), productImage:  product.imageName.toString());
 
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

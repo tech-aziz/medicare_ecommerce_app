@@ -11,6 +11,7 @@ class LoginHandler {
     final id = response['data']['id'].toString();
     final name = response['data']['name'];
     final image = response['data']['image_name'];
+    final phone = response['data']['phone'];
     final branch = response['data']['branch'].toString();
 
     // Save to SharedPreferences
@@ -19,6 +20,7 @@ class LoginHandler {
     await prefs.setString('name', name);
     await prefs.setString('image', image ?? ''); // Handle null with empty string
     await prefs.setString('branch', branch);
+    await prefs.setString('phone', phone);
   }
 
   Future<Map<String, String>> getLoginData() async {
@@ -30,6 +32,7 @@ class LoginHandler {
       'name': prefs.getString('name') ?? '',
       'image': prefs.getString('image') ?? '',
       'branch': prefs.getString('branch') ?? '',
+      'phone': prefs.getString('phone')?? "",
     };
   }
 

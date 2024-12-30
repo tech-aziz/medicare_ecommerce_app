@@ -13,14 +13,12 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
   var isPasswordVisible = false.obs;
 
-   
-
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
   Future<void> login(String username, String password) async {
-     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     isLoading.value = true;
     try {
       final response = await http.post(
@@ -42,21 +40,24 @@ class LoginController extends GetxController {
             borderRadius: 8,
             duration: const Duration(seconds: 3),
           );
-       
 
-    // Extract required fields from response
-    final token = data['token'];
-    final id = data['data']['id'].toString();
-    final name = data['data']['name'];
-    final image = data['data']['image_name'];
-    final branch = data['data']['branch'].toString();
+          // Extract required fields from response
+          final token = data['token'];
+          final id = data['data']['id'].toString();
+          final name = data['data']['name'];
+          final image = data['data']['image_name'];
+          final branch = data['data']['branch'].toString();
 
-    // Save to SharedPreferences
-    await prefs.setString('token', token);
-    await prefs.setString('id', id);
-    await prefs.setString('name', name);
-    await prefs.setString('image', image ?? ''); // Handle null with empty string
-    await prefs.setString('branch', branch);
+          // Save to SharedPreferences
+          await prefs.setString('token', token);
+          await prefs.setString('id', id);
+          await prefs.setString('name', name);
+          await prefs.setString(
+              'image', image ?? ''); // Handle null with empty string
+          await prefs.setString('branch', branch);
+
+          print(prefs.getString('token'));
+
           Get.offAll(() => const HomeView());
         } else {
           Get.snackbar('Error', data['message'] ?? 'Login failed');

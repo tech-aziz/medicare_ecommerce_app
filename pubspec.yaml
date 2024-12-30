@@ -45,9 +45,12 @@ dependencies:
   # automatically resizes text
   auto_size_text: ^3.0.0
   # for launching a URL
-  url_launcher: ^6.1.11
+  url_launcher: ^6.1.0
   intl: ^0.20.1
   shared_preferences: ^2.3.4
+  pdf: ^3.9.0
+  printing: ^5.0.0
+  path_provider: ^2.0.0
 
 
 

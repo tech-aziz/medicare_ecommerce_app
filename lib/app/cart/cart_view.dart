@@ -29,7 +29,8 @@ class _CartViewState extends State<CartView> {
         Uri.parse(apiUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': "Bearer ${preferences.getString('token')}", // Replace as needed
+          'Authorization':
+              "Bearer ${preferences.getString('token')}", // Replace as needed
         },
         body: jsonEncode(orderData),
       );
@@ -93,7 +94,7 @@ class _CartViewState extends State<CartView> {
                   final orderData = {
                     "order": {
                       "orderDate": DateTime.now().toIso8601String(),
-                      "subTotal": cartManager.subtotal,
+                      "subTotal": cartManager.total,
                       "discount": 0,
                       "total": cartManager.total,
                       "paid": cartManager.total,
@@ -164,58 +165,99 @@ class _CartViewState extends State<CartView> {
                             ),
                             child: ListTile(
                               contentPadding: const EdgeInsets.all(8),
-                              leading: SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: Image.asset(
-                                  'assets/images/tafnil.png',
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                              title: Text(
-                                item.productName,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                              subtitle: Text(
-                                "Price: ৳${item.unitRate * item.quantity}",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              trailing: SizedBox(
-                                width: 110,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          item.quantity--;
-                                          if (item.quantity <= 0) {
-                                            item.quantity++;
-                                          }
-                                        });
+                              leading: cartManager
+                                          .imagesCartProduct.isNotEmpty &&
+                                      cartManager.imagesCartProduct[index] !=
+                                          null
+                                  ? Image.network(
+                                      'https://app.tophealthpharma.com/uploads/products/${cartManager.imagesCartProduct[index]}',
+                                      fit: BoxFit.contain,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        // Show default image if network image fails to load
+                                        return Image.network(
+                                            'https://app.tophealthpharma.com/assets/no_image.gif',
+                                            fit: BoxFit.contain);
                                       },
-                                      icon: const Icon(Icons.remove, size: 16),
+                                    )
+                                  : Image.network(
+                                      'https://app.tophealthpharma.com/assets/no_image.gif',
+                                      fit: BoxFit.contain),
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      item.productName,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
                                     ),
-                                    Text(
-                                      item.quantity.toString(),
-                                      style: const TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    "৳${item.unitRate * item.quantity}",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          item.quantity++;
-                                        });
-                                      },
-                                      icon: const Icon(Icons.add, size: 16),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              cartManager.decreaseQuantity(
+                                                  item.productId);
+                                            });
+                                          },
+                                          icon: const Icon(Icons.remove,
+                                              size: 16),
+                                        ),
+                                        Text(
+                                          item.quantity.toString(),
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              cartManager.increaseQuantity(
+                                                  item.productId);
+                                            });
+                                          },
+                                          icon: const Icon(Icons.add, size: 16),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        cartManager
+                                            .removeFromCart(item.productId);
+                                      });
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              '${item.productName} removed from the cart.'),
+                                          backgroundColor: Colors.redAccent,
+                                          duration: const Duration(seconds: 2),
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.delete,
+                                        size: 20, color: Colors.red),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -238,7 +280,7 @@ class _CartViewState extends State<CartView> {
                                 style: TextStyle(fontSize: 16),
                               ),
                               Text(
-                                "৳${cartManager.subtotal.toStringAsFixed(2)}",
+                                "৳${cartManager.total.toStringAsFixed(2)}",
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,

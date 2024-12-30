@@ -46,7 +46,21 @@ class _AllProductView2State extends State<AllProductView2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Product'),
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+        title: Text(
+          'All Product',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Obx(() {
         if (productController.isLoading.value) {
@@ -144,13 +158,17 @@ class _AllProductView2State extends State<AllProductView2> {
                                 InkWell(
                                   onTap: () {
                                     CartManager().addToCart(
-                                        int.parse(
+                                        productId: int.parse(
                                             product.productSlNo.toString()),
-                                        1,
-                                        double.parse(
-                                            product.productSlNo.toString()),
-                                        product.productName.toString(),
-                                        product.imageName);
+                                        quantity: 1,
+                                        unitRate: double.parse(
+                                                product.perUnit.toString()) *
+                                            double.parse(product
+                                                .productSellingPrice
+                                                .toString()),
+                                        productName:
+                                            product.productName.toString(),
+                                        productImage: product.imageName);
 
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -165,7 +183,7 @@ class _AllProductView2State extends State<AllProductView2> {
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
-                                      color: Colors.green,
+                                      color: Colors.blue,
                                     ),
                                     child: const Text(
                                       'Add to cart',

@@ -7,6 +7,8 @@ class ProductModel {
   String? companyId;
   String? brand;
   String? vat;
+  String? discount;
+  String? discountAmount;
   String? productReOrederLevel;
   String? productPurchaseRate;
   String? productSellingPrice;
@@ -38,6 +40,8 @@ class ProductModel {
       this.companyId,
       this.brand,
       this.vat,
+      this.discount,
+      this.discountAmount,
       this.productReOrederLevel,
       this.productPurchaseRate,
       this.productSellingPrice,
@@ -69,6 +73,8 @@ class ProductModel {
     companyId = json['company_id'];
     brand = json['brand'];
     vat = json['vat'];
+    discount = json['discount'];
+    discountAmount = json['discountAmount'];
     productReOrederLevel = json['Product_ReOrederLevel'];
     productPurchaseRate = json['Product_Purchase_Rate'];
     productSellingPrice = json['Product_SellingPrice'];
@@ -102,6 +108,8 @@ class ProductModel {
     data['company_id'] = this.companyId;
     data['brand'] = this.brand;
     data['vat'] = this.vat;
+    data['discount'] = this.discount;
+    data['discountAmount'] = this.discountAmount;
     data['Product_ReOrederLevel'] = this.productReOrederLevel;
     data['Product_Purchase_Rate'] = this.productPurchaseRate;
     data['Product_SellingPrice'] = this.productSellingPrice;

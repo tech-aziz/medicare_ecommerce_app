@@ -141,11 +141,17 @@ class _AllProductViewState extends State<AllProductView> {
                               InkWell(
                                 onTap: () {
                                   CartManager().addToCart(
-                                      int.parse(product.productSlNo.toString()),
-                                      1,
-                                      double.parse(
+                                      productId: int.parse(
                                           product.productSlNo.toString()),
-                                      product.productName.toString(), product.imageName);
+                                      quantity: 1,
+                                      unitRate: double.parse(
+                                              product.perUnit.toString()) *
+                                          double.parse(product
+                                              .productSellingPrice
+                                              .toString()),
+                                      productName:
+                                          product.productName.toString(),
+                                      productImage: product.imageName);
 
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -160,7 +166,7 @@ class _AllProductViewState extends State<AllProductView> {
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
-                                    color: Colors.green,
+                                    color: Colors.blue,
                                   ),
                                   child: const Text(
                                     'Add to cart',
